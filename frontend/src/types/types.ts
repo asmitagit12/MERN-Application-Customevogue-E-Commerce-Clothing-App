@@ -13,3 +13,9 @@ export interface ProductFormData {
   }>
   images?: File[]
 }
+export interface UserFormData {
+  firstName: string,
+  lastName: string,
+  email: string,
+  mobile: string,
+}

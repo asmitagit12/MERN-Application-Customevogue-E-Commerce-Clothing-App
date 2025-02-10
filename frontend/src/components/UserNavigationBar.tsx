@@ -15,6 +15,8 @@ import PersonIcon from '@mui/icons-material/Person';
 import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { RootState } from '../redux/store';
 
 interface MenuItem {
   title: string;
@@ -68,7 +70,7 @@ const menuData: MenuSection[] = [
 
 const UserNavigationBar: React.FC = () => {
   const navigate = useNavigate();
-
+  const user = useSelector((state: RootState) => state.auth.user)
   const handleNavigation = (path: string | undefined) => {
     if (path) {
       navigate(path);
@@ -93,10 +95,11 @@ const UserNavigationBar: React.FC = () => {
     >
       <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mb: 3 }}>
         <Avatar sx={{ width: 80, height: 80, bgcolor: 'primary.main', color: 'white', fontSize: 24 }}>
-          AP
+          {/* Display first letter of firstName and lastName, capitalize them */}
+          {`${user?.firstName[0]?.toUpperCase() || ''}${user?.lastName[0]?.toUpperCase() || ''}`}
         </Avatar>
-        <Typography variant="h6" fontWeight="bold" sx={{ mt: 1 }}>
-          Asmita Patil
+        <Typography variant="h6" fontWeight="bold" sx={{ mt: 1, textTransform: 'capitalize' }}>
+          {`${user?.firstName} ${user?.lastName}`}
         </Typography>
       </Box>
 

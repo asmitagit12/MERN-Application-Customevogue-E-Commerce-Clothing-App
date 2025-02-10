@@ -36,6 +36,9 @@ import ProductForm from './pages/admin/product/ProductForm'
 import AdminProductDetails from './pages/admin/product/AdminProductDetails'
 import AdminProfilePage from './pages/admin/admin-profile/AdminProfilePage'
 import UserCollection from './pages/user/collection/UserCollection'
+import ContactUs from './pages/ContactUs'
+import AboutUs from './pages/AboutUs'
+
 
 function App () {
   const { isAuthenticated } = useAuthContext()
@@ -47,86 +50,20 @@ function App () {
         {/* User Layout - Public Routes */}
         <Route path='/' element={<UserLayout />}>
           <Route index element={<Dashboard />} />
+          <Route path='contact' element={<ContactUs />} />
+          <Route path='about' element={<AboutUs />} />
           <Route path='collection' element={<UserCollection />} />
           <Route
             path='cart'
             element={
               <CartPage
-                cartItems={[
-                  {
-                    productId: {
-                      _id: '67610bf78f616d5f4361f199',
-                      name: 'Sample Product',
-                      price: 19.99,
-                      description:
-                        'A sample product description.A sample product description.',
-                      category: 'Electronics',
-                      images: [
-                        'https://www.octaveclothing.com/cdn/shop/files/0C8A6062.jpg?v=1727972628&width=120',
-                        'https://www.octaveclothing.com/cdn/shop/files/0C8A6062.jpg?v=1727972628&width=120'
-                      ],
-                      stock: 10
-                    },
-                    quantity: 2
-                  },
-                  {
-                    productId: {
-                      _id: '67610bf78f616d5f4361f199',
-                      name: 'Sample Product',
-                      price: 19.99,
-                      description: 'A sample product description.',
-                      category: 'Electronics',
-                      images: [
-                        'https://www.octaveclothing.com/cdn/shop/files/0C8A6062.jpg?v=1727972628&width=120',
-                        'image2.jpg'
-                      ],
-                      stock: 10
-                    },
-                    quantity: 2
-                  },
-                  {
-                    productId: {
-                      _id: '67610bf78f616d5f4361f199',
-                      name: 'Sample Product',
-                      price: 19.99,
-                      description: 'A sample product description.',
-                      category: 'Electronics',
-                      images: [
-                        'https://www.octaveclothing.com/cdn/shop/files/0C8A6062.jpg?v=1727972628&width=120',
-                        'image2.jpg'
-                      ],
-                      stock: 10
-                    },
-                    quantity: 2
-                  },
-                  {
-                    productId: {
-                      _id: '67610bf78f616d5f4361f199',
-                      name: 'Sample Product',
-                      price: 19.99,
-                      description: 'A sample product description.',
-                      category: 'Electronics',
-                      images: [
-                        'https://www.octaveclothing.com/cdn/shop/files/0C8A6062.jpg?v=1727972628&width=120',
-                        'image2.jpg'
-                      ],
-                      stock: 10
-                    },
-                    quantity: 2
-                  }
-                ]}
+                
               />
             }
           />
           <Route
             path='product-details/:productId'
             element={
-              // <ProtectedRoute
-              //   isAllowed={isAuthenticated}
-              //   allowedRoles={['user', 'admin']}
-              //   redirectPath='/auth/signin'
-              // >
-              // </ProtectedRoute>
                 <ProductDetails />
             }
           />

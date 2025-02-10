@@ -1,113 +1,4 @@
-// import React from 'react'
-// import {
-//   Box,
-//   Button,
-//   TextField,
-//   Typography,
-//   Link,
-//   Stack,
-//   Divider
-// } from '@mui/material'
 
-// const SignIn: React.FC = () => {
-//   return (
-//     <Box sx={{ width: '100%' }}>
-//       <Typography variant='h5' gutterBottom>
-//         Sign in
-//       </Typography>
-//       <Typography variant='caption' gutterBottom>
-//         Fill the below fields to continue
-//       </Typography>
-//       <Box sx={{ pr: 3 }}>
-//         <Stack spacing={1} mt={1} mb={1}>
-//           <TextField
-//             fullWidth
-//             size='small'
-//             label='Email'
-//             type='email'
-//             variant='outlined'
-//           />
-//           <TextField
-//             fullWidth
-//             size='small'
-//             label='Password'
-//             type='password'
-//             variant='outlined'
-//           />
-//         </Stack>
-
-//         <Box display='flex' justifyContent='space-between' alignItems='center'>
-//           <Typography variant='body2'>
-//             <input type='checkbox' /> Remember Password
-//           </Typography>
-//           <Link href='/forgot-password' underline='none'>
-//             Forgot Password?
-//           </Link>
-//         </Box>
-//         <Button
-//           fullWidth
-//           variant='contained'
-//           color='primary'
-//           sx={{
-//             mt: 3,
-//             py: 1,
-//             background: 'linear-gradient(to right, #00c6fb, #005bea)', // Hover effect gradient
-//             boxShadow: '0px 6px 14px rgba(0, 0, 0, 0.3)', // Linear gradient
-//             color: 'white',
-//             fontWeight: 'bold',
-//             textTransform: 'none', // Prevents uppercase text
-//             '&:hover': {
-//               background: 'linear-gradient(to right, #00c6fb, #005bea)', // Hover effect gradient
-//               boxShadow: '0px 6px 14px rgba(0, 0, 0, 0.3)'
-//             }
-//           }}
-//         >
-//           Login
-//         </Button>
-//         <Stack
-//           direction={'row'}
-//           spacing={1}
-//           sx={{ alignItems: 'center', justifyContent: 'center', mt: 2, mb: 1 }}
-//         >
-//           <Link href='/otp-login' sx={{ fontSize: 15 }}>
-//             Login Using Mobile
-//           </Link>
-//         </Stack>
-//         <Stack direction={'row'} alignItems='center' spacing={2}>
-//           <Divider sx={{ flexGrow: 1 }} />
-//           <Typography variant='body2'>OR</Typography>
-//           <Divider sx={{ flexGrow: 1 }} />
-//         </Stack>
-//         <Stack
-//           direction={'row'}
-//           spacing={1}
-//           sx={{
-//             display: 'flex',
-//             alignItems: 'center',
-//             justifyContent: 'center',
-//             mt: 2
-//           }}
-//         >
-//           <Typography
-//             style={{
-//               textDecoration: 'none',
-//               color: '#38A6FA',
-//               fontSize: 15,
-//               fontFamily: 'poppins'
-//             }}
-//           >
-//             Don't have an account?
-//           </Typography>
-//           <Link href='/signup' underline='always' sx={{ fontSize: 16 }}>
-//             Create Account
-//           </Link>
-//         </Stack>
-//       </Box>
-//     </Box>
-//   )
-// }
-
-// export default SignIn
 
 import React from 'react'
 import {
@@ -127,6 +18,9 @@ import { jwtDecode } from 'jwt-decode'
 import { useNavigate } from 'react-router-dom'
 import { useAuthContext } from '../hooks/AuthContext'
 import toast from 'react-hot-toast'
+import { loginAction } from '../redux/slices/authSlice'
+import { useDispatch } from 'react-redux'
+import { getUserProfile } from '../services/user/userService'
 
 const SignInSchema = z.object({
   email: z.string().email('Invalid email address'),
@@ -134,6 +28,7 @@ const SignInSchema = z.object({
 })
 
 interface DecodedToken {
+  userId: any
   role: string
 }
 
@@ -142,6 +37,7 @@ type SignInFormInputs = z.infer<typeof SignInSchema>
 const SignIn: React.FC = () => {
   const { login } = useAuthContext()
   const navigate = useNavigate()
+  const dispatch = useDispatch()
   const {
     handleSubmit,
     control,
@@ -157,8 +53,19 @@ const SignIn: React.FC = () => {
       sessionStorage.setItem('authToken', token)
       sessionStorage.setItem('isAuth', JSON.stringify(true))
       const decodedToken = jwtDecode<DecodedToken>(token)
-      const userRole = decodedToken?.role
+
+
+      const userId = decodedToken.userId;
+      const userRole = decodedToken.role;
+
+      // Fetch the full user data based on userId (you'll need an API call for this)
+      const userResponse = await getUserProfile(userId); // Assuming you have a function to fetch user details
+      const user = userResponse.data; // Assuming userResponse has the full user details like name, email, etc.
+      console.log(user)
+      // Dispatch the login action with the user details and token
+      dispatch(loginAction({ others: user, token }));
       login(token)
+      console.log(decodedToken, token)
       if (userRole === 'admin') {
         navigate('/admin')
       } else {
@@ -175,7 +82,7 @@ const SignIn: React.FC = () => {
   return (
     <Box sx={{ width: '100%' }}>
       <Stack direction="row" alignItems="center" spacing={2}>
-        <Typography sx={{ fontSize: 24, fontWeight: 500,fontFamily:'Prata, serif' }} gutterBottom>
+        <Typography sx={{ fontSize: 24, fontWeight: 500, fontFamily: 'Prata, serif' }} gutterBottom>
           Login
         </Typography>
         <Box flex={1}>

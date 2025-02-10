@@ -17,6 +17,8 @@ import NotificationsIcon from '@mui/icons-material/Notifications'
 import AccountCircleRoundedIcon from '@mui/icons-material/AccountCircleRounded'
 import { useNavigate } from 'react-router-dom'
 import { useAuthContext } from '../hooks/AuthContext'
+import { useSelector } from 'react-redux'
+import { RootState } from '../redux/store'
 
 interface MenuItemConfig {
   label: string
@@ -28,7 +30,7 @@ const UserMenu: React.FC = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const navigate = useNavigate()
   const { isAuthenticated, logout } = useAuthContext()
-
+  const user = useSelector((state: RootState) => state.auth.user)
   const handleMenuClose = () => {
     setAnchorEl(null)
   }
@@ -82,8 +84,8 @@ const UserMenu: React.FC = () => {
           }}
           onClick={event => setAnchorEl(event.currentTarget)}
         >
-          <AccountCircleRoundedIcon sx={{ mr: 1 }} />
-          Asmita
+          <AccountCircleRoundedIcon color='primary' sx={{ mr: 1 }} />
+          {user?.firstName}
         </Button>
       ) : (
         <IconButton

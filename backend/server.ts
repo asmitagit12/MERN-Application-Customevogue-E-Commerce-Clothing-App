@@ -11,6 +11,7 @@ import cartRoutes from './routes/user/cart/cartRouter'
 import userCategoryRoutes from './routes/user/category/userCategoryRouter'
 import { authenticate, isAdmin } from './middleware/authMiddleware'
 import mediaRouter from './controllers/mediaUploaders'
+import userProfileRouter from './routes/user/userProfileRouter'
 import path from 'path'
 
 dotenv.config()
@@ -35,6 +36,7 @@ app.use('/api/products', productRoutes) // API for products
 app.use('/api/subcategories', subCategoryRoutes) // API for products
 app.use('/api/category', authenticate, isAdmin, categoryRoutes) // API for products
 app.use('/api/users', authenticate, isAdmin, userRoutes)
+app.use('/api/profile', userProfileRouter )
 
 // user routes
 app.use('/api/user/cart', cartRoutes)

@@ -7,16 +7,20 @@ import {
   Paper,
   Stack,
   Breadcrumbs,
-  Link,
-  Chip
+  Link
 } from '@mui/material';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import { getSingleProduct } from '../../../services/admin/productServices';
+import { addProduct } from '../../../redux/slices/cartSlice';
+import toast from 'react-hot-toast';
 
-const baseUrl = import.meta.env.VITE_BASEURL
+const baseUrl = import.meta.env.VITE_BASEURL;
 
 const ProductDetails: React.FC = () => {
   const { productId } = useParams();
+  const dispatch = useDispatch();
+  const navigate = useNavigate()
   const [product, setProduct] = useState<any>(null);
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
@@ -34,6 +38,29 @@ const ProductDetails: React.FC = () => {
     fetchSingleProduct();
   }, [productId]);
 
+  const handleAddToCart = () => {
+    if (!product) return;
+    if (!selectedSize) {
+      toast.error("Please select a size before adding to cart.");
+      return;
+    }
+
+    dispatch(addProduct({
+      id: product._id,
+      name: product.name,
+      price: product.price,
+      size:selectedSize,
+      quantity: 1,
+      productId: product._id,
+      image:selectedImage,
+      description:product.description,
+     
+    }));
+
+    toast.success(`Product added to cart successfully!`);
+    navigate('/cart')
+  };
+
   if (!product) return <Typography>Loading...</Typography>;
 
   return (
@@ -41,7 +68,6 @@ const ProductDetails: React.FC = () => {
       <Grid container spacing={1}>
         <Grid item xs={6}>
           <Grid container spacing={2} width={'100%'}>
-            {/* Thumbnails */}
             <Grid item xs={2} mr={0.5}>
               <Stack spacing={0.5}>
                 {product.images.map((image: string, index: number) => (
@@ -62,7 +88,6 @@ const ProductDetails: React.FC = () => {
               </Stack>
             </Grid>
 
-            {/* Main Image */}
             <Grid item xs={9.5}>
               <Box
                 component='img'
@@ -74,7 +99,6 @@ const ProductDetails: React.FC = () => {
           </Grid>
         </Grid>
 
-        {/* Product Details */}
         <Grid item xs={6}>
           <Stack spacing={1}>
             <Breadcrumbs maxItems={5} aria-label='breadcrumb' sx={{ fontSize: 13 }}>
@@ -108,17 +132,25 @@ const ProductDetails: React.FC = () => {
               </Stack>
             </Stack>
             <Stack direction='row' spacing={1} pt={2}>
-              <Button variant='contained' color='primary' sx={{
-                width: '50%', background: 'linear-gradient(to right, #00c6fb, #005bea)',
-                boxShadow: '0px 6px 14px rgba(0, 0, 0, 0.3)',
-                color: 'white',
-                fontWeight: 'bold',
-                textTransform: 'none',
-                '&:hover': {
+              <Button
+                variant='contained'
+                color='primary'
+                onClick={handleAddToCart}
+                sx={{
+                  width: '50%',
                   background: 'linear-gradient(to right, #00c6fb, #005bea)',
-                  boxShadow: '0px 6px 14px rgba(0, 0, 0, 0.3)'
-                }
-              }}>Add to Cart</Button>
+                  boxShadow: '0px 6px 14px rgba(0, 0, 0, 0.3)',
+                  color: 'white',
+                  fontWeight: 'bold',
+                  textTransform: 'none',
+                  '&:hover': {
+                    background: 'linear-gradient(to right, #00c6fb, #005bea)',
+                    boxShadow: '0px 6px 14px rgba(0, 0, 0, 0.3)'
+                  }
+                }}
+              >
+                Add to Cart
+              </Button>
             </Stack>
           </Stack>
         </Grid>

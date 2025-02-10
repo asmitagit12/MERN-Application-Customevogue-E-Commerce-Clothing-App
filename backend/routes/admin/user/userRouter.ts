@@ -1,5 +1,4 @@
 import express from 'express'
-import { authenticate, authorizeRole } from '../../../middleware/authMiddleware'
 import { getAllUsers, getUserById } from '../../../controllers/userController'
 
 const router = express.Router()

@@ -58,7 +58,7 @@ const ScrollToTopButton: React.FC = () => {
 };
 
 const UserLayout: React.FC = () => {
-  const headerHeight = 56; // Estimated height of your header in px
+  const headerHeight = 40; // Estimated height of your header in px
 
   return (
     <Box height="100%" width="100%" display="flex" flexDirection="column">

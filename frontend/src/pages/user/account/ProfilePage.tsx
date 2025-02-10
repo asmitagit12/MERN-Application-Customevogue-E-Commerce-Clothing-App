@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import {
   Button,
   TextField,
@@ -14,6 +14,12 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import EditIcon from '@mui/icons-material/Edit'
 import CancelIcon from '@mui/icons-material/Cancel'
 import CameraAltIcon from '@mui/icons-material/CameraAlt'
+import { getUserProfile, updateUserProfile } from '../../../services/user/userService'
+import { useSelector } from 'react-redux'
+import { RootState } from '../../../redux/store'
+import toast from 'react-hot-toast'
+
+// import { getUserProfile, updateUserProfile } from '../../api/userAPI' // Import API functions
 
 // Define the validation schema using Zod
 const schema = z.object({
@@ -40,11 +46,17 @@ type FormData = z.infer<typeof schema>
 const ProfilePage: React.FC = () => {
   const [isEditing, setIsEditing] = useState(false)
   const [profilePic, setProfilePic] = useState<string>(
-    'https://via.placeholder.com/150'
+    'https://img.freepik.com/premium-vector/man-avatar-profile-picture-vector-illustration_268834-538.jpg?semt=ais_hybrid'
   ) // Default placeholder image
+
+  const user = useSelector((state: RootState) => state.auth.user)
+  // Assume the user ID is retrieved from context or props
+  const userId = user?._id // Replace with actual user ID from context or authentication
+
   const {
     control,
     handleSubmit,
+    setValue,
     formState: { errors }
   } = useForm<FormData>({
     resolver: zodResolver(schema),
@@ -56,9 +68,44 @@ const ProfilePage: React.FC = () => {
     }
   })
 
-  const onSubmit = (data: FormData) => {
-    console.log('Form data submitted:', data)
-    // Handle form submission, e.g., send to API
+  // Fetch user data when the component mounts
+  useEffect(() => {
+    if(userId){
+
+      const fetchUserProfile = async () => {
+        try {
+          const res = await getUserProfile(userId)
+          const userData = res.data
+          console.log('userData',userData)
+          // Set form values based on the user data received
+          setValue('firstName', userData.firstName)
+          setValue('lastName', userData.lastName)
+          setValue('email', userData.email)
+          setValue('mobile', userData.mobile)
+          // You can also set the profile picture if it's part of the user data
+          // setProfilePic(userData.profilePic || 'https://via.placeholder.com/150')
+        } catch (error) {
+          console.error('Error fetching user profile:', error)
+        }
+      }
+  
+      fetchUserProfile()
+    }else{
+      console.error('User ID is undefined, cannot fetch profile')
+    }
+  }, [userId, setValue])
+
+  const onSubmit = async (data: FormData) => {
+    if (userId) {
+      try {
+        await updateUserProfile(userId, data)
+        toast.success('Profile updated successfully')
+      } catch (error) {
+        toast.error('Error updating user profile')
+      }
+    } else {
+      console.error('User ID is undefined')
+    }
   }
 
   const handleEdit = () => {
@@ -74,16 +121,8 @@ const ProfilePage: React.FC = () => {
 
   return (
     <div style={{ padding: '20px', backgroundColor: '#f5f5f5' }}>
-      <Paper
-        sx={{ padding: '24px', borderRadius: '8px', boxShadow: 3 }}
-        elevation={3}
-      >
-        <Box
-          display='flex'
-          flexDirection='column'
-          alignItems='flex-start'
-          marginBottom={3}
-        >
+      <Paper sx={{ padding: '24px', borderRadius: '8px', boxShadow: 3 }} elevation={3}>
+        <Box display='flex' flexDirection='column' alignItems='flex-start' marginBottom={3}>
           <Box
             display='flex'
             justifyContent='flex-start'
@@ -95,41 +134,32 @@ const ProfilePage: React.FC = () => {
               overflow: 'hidden',
               boxShadow: 3,
               backgroundColor: '#ddd',
-              position: 'relative' // Ensures IconButton positions relative to this container
+              position: 'relative'
             }}
           >
-            <img
-              src={profilePic}
-              alt='Profile'
-              style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-            />
+            <img src={profilePic} alt='Profile' style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
             <IconButton
               onClick={handleProfilePicChange}
               sx={{
                 position: 'absolute',
-                bottom: 10, // Positioned at bottom-right corner
+                bottom: 10,
                 right: 25,
                 backgroundColor: '#1976d2',
                 color: '#fff',
-                '&:hover': {
-                  backgroundColor: '#1565c0'
-                },
+                '&:hover': { backgroundColor: '#1565c0' },
                 boxShadow: 2,
-                zIndex: 2 // Ensures it appears above the image
+                zIndex: 2
               }}
             >
-              <CameraAltIcon fontSize='small' sx={{fontSize:20}}/>
+              <CameraAltIcon fontSize='small' sx={{ fontSize: 20 }} />
             </IconButton>
           </Box>
         </Box>
 
-        <Typography
-          variant='h5'
-          gutterBottom
-          sx={{ fontWeight: 'bold', color: '#333',pb:1 }}
-        >
+        <Typography variant='h5' gutterBottom sx={{ fontWeight: 'bold', color: '#333', pb: 1 }}>
           Personal Information
         </Typography>
+
         <form onSubmit={handleSubmit(onSubmit)}>
           <Grid container spacing={3}>
             <Grid item lg={6}>
@@ -146,11 +176,7 @@ const ProfilePage: React.FC = () => {
                     disabled={!isEditing}
                     error={!!errors.firstName}
                     helperText={errors.firstName?.message}
-                    sx={{
-                      '& .MuiInputBase-root': {
-                        backgroundColor: '#fff'
-                      }
-                    }}
+                    sx={{ '& .MuiInputBase-root': { backgroundColor: '#fff' } }}
                   />
                 )}
               />
@@ -170,11 +196,7 @@ const ProfilePage: React.FC = () => {
                     disabled={!isEditing}
                     error={!!errors.lastName}
                     helperText={errors.lastName?.message}
-                    sx={{
-                      '& .MuiInputBase-root': {
-                        backgroundColor: '#fff'
-                      }
-                    }}
+                    sx={{ '& .MuiInputBase-root': { backgroundColor: '#fff' } }}
                   />
                 )}
               />
@@ -191,14 +213,10 @@ const ProfilePage: React.FC = () => {
                     variant='outlined'
                     fullWidth
                     size='small'
-                    disabled={!isEditing}
+                    disabled
                     error={!!errors.email}
                     helperText={errors.email?.message}
-                    sx={{
-                      '& .MuiInputBase-root': {
-                        backgroundColor: '#fff'
-                      }
-                    }}
+                    sx={{ '& .MuiInputBase-root': { backgroundColor: '#fff' } }}
                   />
                 )}
               />
@@ -218,11 +236,7 @@ const ProfilePage: React.FC = () => {
                     disabled={!isEditing}
                     error={!!errors.mobile}
                     helperText={errors.mobile?.message}
-                    sx={{
-                      '& .MuiInputBase-root': {
-                        backgroundColor: '#fff'
-                      }
-                    }}
+                    sx={{ '& .MuiInputBase-root': { backgroundColor: '#fff' } }}
                   />
                 )}
               />
@@ -236,7 +250,7 @@ const ProfilePage: React.FC = () => {
                   type='submit'
                   disabled={!isEditing}
                   sx={{
-                    whiteSpace:'nowrap',
+                    whiteSpace: 'nowrap',
                     fontWeight: 'bold',
                     textTransform: 'none',
                     boxShadow: '0px 2px 8px rgba(0, 0, 0, 0.1)',
@@ -251,7 +265,6 @@ const ProfilePage: React.FC = () => {
                   variant='outlined'
                   onClick={handleEdit}
                   sx={{
-                    // padding: '8px 16px',
                     fontWeight: 'bold',
                     textTransform: 'none',
                     color: isEditing ? 'inherit' : '#1976d2',
