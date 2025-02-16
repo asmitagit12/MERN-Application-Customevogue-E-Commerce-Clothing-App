@@ -28,6 +28,7 @@ interface Product {
   stock: number;
   sizes: Size[];
   images: string[];
+  image:string;
   createdAt: string;
   updatedAt: string;
   __v: number;

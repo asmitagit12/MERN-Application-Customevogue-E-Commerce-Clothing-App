@@ -38,6 +38,7 @@ import AdminProfilePage from './pages/admin/admin-profile/AdminProfilePage'
 import UserCollection from './pages/user/collection/UserCollection'
 import ContactUs from './pages/ContactUs'
 import AboutUs from './pages/AboutUs'
+import Checkout from './pages/user/cart/Checkout'
 
 
 function App () {
@@ -57,6 +58,14 @@ function App () {
             path='cart'
             element={
               <CartPage
+                
+              />
+            }
+          />
+          <Route
+            path='checkout'
+            element={
+              <Checkout
                 
               />
             }

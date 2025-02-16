@@ -10,7 +10,8 @@ interface Product {
   name: string;
   price: number;
   quantity: number;
-  image?: any
+  image?: any;
+  images?: []
 }
 
 // Define the initial state type

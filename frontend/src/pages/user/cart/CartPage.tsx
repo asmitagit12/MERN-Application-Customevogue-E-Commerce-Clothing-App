@@ -171,13 +171,17 @@ import { RootState } from '../../../redux/store'
 import { addProduct, removeProduct, incrementQuantity, decrementQuantity } from '../../../redux/slices/cartSlice'
 import { useAuthContext } from '../../../hooks/AuthContext'
 import ConfirmationDialog from '../../../components/controls/ConfirmationDialog'
+import { addWishlistItem, removeWishlistItem } from '../../../redux/slices/wishlistSlice'
+import toast from 'react-hot-toast'
 
 
 const baseUrl = import.meta.env.VITE_BASEURL;
 
 const CartPage: React.FC = () => {
   const { isAuthenticated } = useAuthContext()
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
+  // Fetch wishlist items from Redux store
+  const wishlistItems = useSelector((state: any) => state.wishlist.items);
   const cartItems = useSelector((state: RootState) => state.cart.products) // Use selector to get cart items
   const isEmpty = cartItems.length === 0
   const navigate = useNavigate()
@@ -216,6 +220,22 @@ const CartPage: React.FC = () => {
     dispatch(removeProduct({ id: selectedProduct.id }))
     handleClose()
   }
+
+  const handleAddToWishlist = (product: any) => {
+    console.log('product', product)
+    // Check if the product is already in the wishlist
+    const existingItem = wishlistItems?.find((item: any) => item._id === product._id);
+
+    if (existingItem) {
+      // If it's in the wishlist, remove it
+      dispatch(removeWishlistItem({ id: product._id }));
+      toast.success('Product removed from wishlist')
+    } else {
+      // If it's not in the wishlist, add it
+      dispatch(addWishlistItem(product));
+      toast.success('Product added to wishlist')
+    }
+  };
 
   return (
     <Box
@@ -478,7 +498,10 @@ const CartPage: React.FC = () => {
                                   variant='text'
                                   size='small'
                                   sx={{ color: '#00c6fb', fontWeight: 550, fontSize: 12 }}
-                                  onClick={() => console.log('Move to wishlist logic')}
+                                  onClick={(e) => {
+                                    e.stopPropagation(); // Prevent triggering the card's onClick
+                                    handleAddToWishlist(item);
+                                  }}
                                 >
                                   Move to Wishlist
                                 </Button>
@@ -491,7 +514,7 @@ const CartPage: React.FC = () => {
                                   >
                                     <DeleteOutlineSharpIcon />
                                   </IconButton>
-                                  
+
                                 </Stack>
                               </Stack>
                             </Box>

@@ -17,8 +17,9 @@ import NotificationsIcon from '@mui/icons-material/Notifications'
 import AccountCircleRoundedIcon from '@mui/icons-material/AccountCircleRounded'
 import { useNavigate } from 'react-router-dom'
 import { useAuthContext } from '../hooks/AuthContext'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '../redux/store'
+import {  logoutAction } from '../redux/slices/authSlice'
 
 interface MenuItemConfig {
   label: string
@@ -29,6 +30,7 @@ interface MenuItemConfig {
 const UserMenu: React.FC = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const navigate = useNavigate()
+  const dispatch = useDispatch()
   const { isAuthenticated, logout } = useAuthContext()
   const user = useSelector((state: RootState) => state.auth.user)
   const handleMenuClose = () => {
@@ -37,6 +39,7 @@ const UserMenu: React.FC = () => {
 
   const handleLogout = () => {
     logout()
+    dispatch(logoutAction());
     sessionStorage.removeItem('authToken')
     sessionStorage.removeItem('isAuth')
     navigate('/auth/signin')

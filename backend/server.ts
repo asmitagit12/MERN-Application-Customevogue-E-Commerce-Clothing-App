@@ -12,8 +12,10 @@ import userCategoryRoutes from './routes/user/category/userCategoryRouter'
 import { authenticate, isAdmin } from './middleware/authMiddleware'
 import mediaRouter from './controllers/mediaUploaders'
 import userProfileRouter from './routes/user/userProfileRouter'
+import orderRouter from './routes/user/order/orderRouter'
+import paymentRouter from './routes/payment/paymentRouter'
+import addressRouter from './routes/address/addressRouter'
 import path from 'path'
-
 dotenv.config()
 connectDB()
 
@@ -37,6 +39,7 @@ app.use('/api/subcategories', subCategoryRoutes) // API for products
 app.use('/api/category', authenticate, isAdmin, categoryRoutes) // API for products
 app.use('/api/users', authenticate, isAdmin, userRoutes)
 app.use('/api/profile', userProfileRouter )
+app.use('/api/addresses', addressRouter )
 
 // user routes
 app.use('/api/user/cart', cartRoutes)
@@ -44,6 +47,9 @@ app.use('/api/user/category', userCategoryRoutes)
 
 //media upload router
 app.use('/api', mediaRouter);
+
+app.use("/api/orders", orderRouter);
+app.use("/api/payments", paymentRouter);
 
 
 app.listen(PORT, () => {

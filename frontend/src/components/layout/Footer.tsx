@@ -20,9 +20,9 @@ const Footer = () => {
           </Typography>
           <Stack spacing={1}>
             <Typography variant="body2" sx={{color:'#999',fontSize:15}}>Home</Typography>
-            <Typography variant="body2" sx={{color:'#999',fontSize:15}}>Gift Card</Typography>
-            <Typography variant="body2" sx={{color:'#999',fontSize:15}}>Store Locator</Typography>
-            <Typography variant="body2" sx={{color:'#999',fontSize:15}}>Blogs</Typography>
+            <Typography variant="body2" sx={{color:'#999',fontSize:15}}>Collection</Typography>
+            <Typography variant="body2" sx={{color:'#999',fontSize:15}}>About Us</Typography>
+            <Typography variant="body2" sx={{color:'#999',fontSize:15}}>Contact Us</Typography>
             <Typography variant="body2" sx={{color:'#999',fontSize:15}}>Sitemap</Typography>
           </Stack>
         </Grid>

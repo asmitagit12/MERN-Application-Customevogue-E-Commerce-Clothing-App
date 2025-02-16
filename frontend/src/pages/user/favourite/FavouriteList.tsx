@@ -190,7 +190,7 @@ const FavouriteList: React.FC = () => {
 
   // Fetch wishlist items from Redux store
   const wishlistItems = useSelector((state: any) => state.wishlist.items)
-
+console.log('wishlistItems',wishlistItems)
   const isEmpty = wishlistItems?.length === 0
 
   // Remove item from the wishlist
@@ -289,7 +289,7 @@ const FavouriteList: React.FC = () => {
                       }}
                     >
                       <img
-                        src={`${baseUrl}/uploads/${item.images[0]}`}  // Use images[0] for product image
+                        src={`${baseUrl}/uploads/${item?.images[0]}`}  // Use images[0] for product image
                         // src={item.images[0]}  // Use images[0] for product image
                         alt={item.name}
                         style={{
