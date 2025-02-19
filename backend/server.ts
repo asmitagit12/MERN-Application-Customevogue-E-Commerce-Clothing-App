@@ -30,7 +30,7 @@ const PORT = process.env.PORT || 5000
 // JWT_SECRET="jwt"
 app.use(cors({
   origin: '*', // Temporarily allow all origins (for debugging)
-  methods: 'GET,POST,PUT,DELETE,OPTIONS',
+  methods: 'GET,POST',
   allowedHeaders: 'Content-Type,Authorization'
 }));
 
