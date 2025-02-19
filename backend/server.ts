@@ -21,6 +21,8 @@ connectDB()
 
 const app = express()
 const PORT = process.env.PORT || 5000
+//MONGO_URI="mongodb://localhost:27017/online-shop"
+// mongodb+srv://asmita:<db_password>@clothing-app.fi3cy.mongodb.net/?retryWrites=true&w=majority&appName=clothing-app
 
 app.use(cors())
 app.use(express.json())
@@ -38,8 +40,8 @@ app.use('/api/products', productRoutes) // API for products
 app.use('/api/subcategories', subCategoryRoutes) // API for products
 app.use('/api/category', authenticate, isAdmin, categoryRoutes) // API for products
 app.use('/api/users', authenticate, isAdmin, userRoutes)
-app.use('/api/profile', userProfileRouter )
-app.use('/api/addresses', addressRouter )
+app.use('/api/profile', userProfileRouter)
+app.use('/api/addresses', addressRouter)
 
 // user routes
 app.use('/api/user/cart', cartRoutes)
