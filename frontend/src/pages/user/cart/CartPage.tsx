@@ -197,7 +197,7 @@ console.log(cartItems)
                               <CardMedia
                                 component='img'
 
-                                image={`${baseUrl}/uploads/${item.image}`}
+                                image={`${baseUrl}api/uploads/${item.image}`}
                                 alt={item.name}
                                 sx={{
                                   width: 100,

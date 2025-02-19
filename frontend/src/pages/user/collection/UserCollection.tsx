@@ -289,7 +289,7 @@ const UserCollection: React.FC = () => {
                                     <CardMedia
                                         component="img"
                                         height="200"
-                                        image={`${baseUrl}/uploads/${product.images[0]}`}
+                                        image={`${baseUrl}api/uploads/${product.images[0]}`}
                                         alt={product.name}
                                     />
                                     <CardContent style={{ flexGrow: 1 }}>

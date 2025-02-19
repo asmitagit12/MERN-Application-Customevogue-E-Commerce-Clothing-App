@@ -172,7 +172,7 @@ const Checkout: React.FC = () => {
                 <Box key={item.id} display="flex" justifyContent="space-between" p={1}>
                   <Box display="flex" alignItems="center">
                     <img
-                      src={`${baseUrl}/uploads/${item.image}`}
+                      src={`${baseUrl}api/uploads/${item.image}`}
                       alt={item.name}
                       width={50}
                       height={50}

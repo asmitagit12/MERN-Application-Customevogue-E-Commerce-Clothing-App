@@ -91,7 +91,7 @@ const ProductDetails: React.FC = () => {
             <Grid item xs={9.5}>
               <Box
                 component='img'
-                src={`${baseUrl}/uploads/${selectedImage}`}
+                src={`${baseUrl}api/uploads/${selectedImage}`}
                 alt='Selected Product'
                 sx={{ width: '100%', height: 'auto', border: '1px solid #ccc', borderRadius: '8px' }}
               />
