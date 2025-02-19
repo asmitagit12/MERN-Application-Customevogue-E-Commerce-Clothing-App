@@ -29,10 +29,13 @@ const PORT = process.env.PORT || 5000
 // PORT=5000
 // JWT_SECRET="jwt"
 app.use(cors({
-  origin:["https://ap-customevogue-mern.vercel.app/"],
-  methods:["POST","GET"],
-  credentials:true
-}))
+  origin: ['https://ap-customevogue-mern.vercel.app'], // Allow only your frontend
+  methods: 'GET,POST,PUT,DELETE',
+  allowedHeaders: 'Content-Type,Authorization'
+}));
+
+app.options('*', cors()); // Handle preflight
+
 app.use(express.json())
 
 // Serve static files from the 'uploads' directory
