@@ -22,14 +22,14 @@ connectDB()
 const app = express()
 const PORT = process.env.PORT || 5000
 //MONGO_URI="mongodb://localhost:27017/online-shop"
-// mongodb+srv://asmita:<db_password>@clothing-app.fi3cy.mongodb.net/?retryWrites=true&w=majority&appName=clothing-app
-
-
 // MONGO_URI="mongodb+srv://asmita:1234@clothing-app.fi3cy.mongodb.net/clothing-app?retryWrites=true&w=majority&appName=clothing-app"
 // PORT=5000
 // JWT_SECRET="jwt"
 // Allow frontend origin
-const allowedOrigins = ['https://ap-customevogue-mern.vercel.app'];
+const allowedOrigins = [
+  'https://ap-customevogue-mern.vercel.app',
+  'https://ap-customevogue.vercel.app'
+];
 
 app.use(cors({
   origin: (origin, callback) => {
@@ -43,6 +43,8 @@ app.use(cors({
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
+
+
 
 // Handle preflight requests
 app.options('*', cors());
