@@ -38,7 +38,7 @@ type MenuItem = {
 
 const Header: React.FC = () => {
   const [drawerOpen, setDrawerOpen] = useState<boolean>(false);
-  
+
   const navigate = useNavigate();
   const cartItems = useSelector((state: RootState) => state.cart.products)
 
@@ -79,7 +79,7 @@ const Header: React.FC = () => {
 
 
 
-  
+
 
   return (
     <>
@@ -169,6 +169,7 @@ const Header: React.FC = () => {
             {menuItems.map((item) => (
               <Typography
                 key={item.name}
+                onClick={() => navigate(item.path)} // Navigate to the item's path
                 sx={{
                   textDecoration: 'none',
                   color: 'inherit',
@@ -178,8 +179,8 @@ const Header: React.FC = () => {
                 }}
               >
                 {item.name}
-
               </Typography>
+
             ))}
           </Stack>
           {/* Search and Icons */}
