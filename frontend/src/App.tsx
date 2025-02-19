@@ -41,9 +41,9 @@ import AboutUs from './pages/AboutUs'
 import Checkout from './pages/user/cart/Checkout'
 
 
-function App () {
+function App() {
   const { isAuthenticated } = useAuthContext()
-
+  // VITE_BASEURL="http://localhost:5000/api"
   return (
     <>
       <Toaster />
@@ -58,7 +58,7 @@ function App () {
             path='cart'
             element={
               <CartPage
-                
+
               />
             }
           />
@@ -66,14 +66,14 @@ function App () {
             path='checkout'
             element={
               <Checkout
-                
+
               />
             }
           />
           <Route
             path='product-details/:productId'
             element={
-                <ProductDetails />
+              <ProductDetails />
             }
           />
           <Route

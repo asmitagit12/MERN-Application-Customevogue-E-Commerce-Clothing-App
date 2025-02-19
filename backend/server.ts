@@ -24,6 +24,10 @@ const PORT = process.env.PORT || 5000
 //MONGO_URI="mongodb://localhost:27017/online-shop"
 // mongodb+srv://asmita:<db_password>@clothing-app.fi3cy.mongodb.net/?retryWrites=true&w=majority&appName=clothing-app
 
+
+// MONGO_URI="mongodb+srv://asmita:1234@clothing-app.fi3cy.mongodb.net/clothing-app?retryWrites=true&w=majority&appName=clothing-app"
+// PORT=5000
+// JWT_SECRET="jwt"
 app.use(cors())
 app.use(express.json())
 
