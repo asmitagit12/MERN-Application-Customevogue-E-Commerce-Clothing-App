@@ -5,7 +5,8 @@ const http = axios.create({
   baseURL: `${baseUrl}api` || 'http://localhost:5000/api',
   headers: {
     'Content-Type': 'application/json'
-  }
+  },
+  withCredentials:true
 })
 
 // Add token to headers
