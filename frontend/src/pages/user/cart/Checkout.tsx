@@ -42,8 +42,7 @@ const Checkout: React.FC = () => {
   const cartItems = useSelector((state: RootState) => state.cart.products)
   const userID = user?._id as string
   const [addresses, setAddresses] = useState<Address[]>([]);
-  const [orderSummary, setOrderSummary] = useState({ items: 5, totalPrice: 1366 });
-  const [priceDetails, setPriceDetails] = useState({});
+ 
 
   const [currentStep, setCurrentStep] = useState(1);
   const [selectedPayment, setSelectedPayment] = useState<string>("");

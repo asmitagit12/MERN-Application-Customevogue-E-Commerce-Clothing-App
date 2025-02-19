@@ -1,6 +1,5 @@
 // AuthContext.tsx
-import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
-import { useConfig } from '../hooks/use-config';
+import React, { createContext, useContext, useState, ReactNode } from 'react';
 import { useMount } from '../hooks/useMount';
 
 interface AuthContextType {
@@ -13,25 +12,18 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
 
-  const [isAuth, setAuth] = useConfig();
   const mount = useMount();
 
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
 
-  useEffect(() => {
-    if(isAuth.isAuth){
-      setIsAuthenticated(true);
-    }
-  }, [isAuth]);
+ 
 
   const login = () => {
     setIsAuthenticated(true);
-    setAuth({isAuth:true});
   };
 
   const logout = () => {
     setIsAuthenticated(false);
-    setAuth({isAuth:false});
   };
 
   return (

@@ -1,4 +1,4 @@
-import React, { useState, MouseEvent } from 'react';
+import React, { useState } from 'react';
 import {
   AppBar,
   Badge,
@@ -8,10 +8,9 @@ import {
   List,
   ListItem,
   ListItemText,
-  Paper,
-  Popper,
+
   Stack,
-  TextField,
+
   Toolbar,
   Typography,
 } from '@mui/material';
@@ -23,7 +22,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import Marquee from 'react-fast-marquee';
 import logo from '../../assets/logo.svg';
 import UserMenu from '../UserMenu';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { RootState } from '../../redux/store';
 
 type SubMenuItem = {
@@ -39,13 +38,8 @@ type MenuItem = {
 
 const Header: React.FC = () => {
   const [drawerOpen, setDrawerOpen] = useState<boolean>(false);
-  const [anchorEl, setAnchorEl] = useState<{
-    menuName: string;
-    target: HTMLElement;
-  } | null>(null);
-  const [currentSubMenu, setCurrentSubMenu] = useState<SubMenuItem[]>([]);
+  
   const navigate = useNavigate();
-  const dispatch = useDispatch()
   const cartItems = useSelector((state: RootState) => state.cart.products)
 
   const menuItems: MenuItem[] = [
@@ -85,22 +79,7 @@ const Header: React.FC = () => {
 
 
 
-  const handleMouseEnter = (event: MouseEvent<HTMLElement>, item: MenuItem) => {
-    if (item.subMenu.length > 0) {
-      setAnchorEl({ menuName: item.name, target: event.currentTarget });
-      setCurrentSubMenu(item.subMenu);
-    }
-  };
-
-  const handleMouseLeave = () => {
-    setAnchorEl(null);
-  };
-
-  const handleClick = (item: MenuItem) => {
-    if (item.subMenu.length === 0) {
-      navigate(item.path); // Navigate directly if no submenu
-    }
-  };
+  
 
   return (
     <>
@@ -190,9 +169,6 @@ const Header: React.FC = () => {
             {menuItems.map((item) => (
               <Typography
                 key={item.name}
-                onMouseEnter={(e) => handleMouseEnter(e, item)}
-                onMouseLeave={handleMouseLeave}
-                onClick={() => handleClick(item)}
                 sx={{
                   textDecoration: 'none',
                   color: 'inherit',

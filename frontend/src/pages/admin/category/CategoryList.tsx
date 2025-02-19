@@ -64,7 +64,7 @@ const CategoryList: React.FC = () => {
     control,
     reset,
     setValue,
-    clearErrors,
+   
     formState: { errors }
   } = useForm<CategoryFormData>({
     resolver: zodResolver(categorySchema),

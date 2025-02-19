@@ -84,7 +84,6 @@ const UserLayout: React.FC = () => {
 };
 
 const AdminLayout: React.FC = () => {
-  const headerHeight = 64; // Estimated height of admin header in px
   const sidebarWidth = 200; // Adjust this to your sidebar's width
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const matches = useMediaQuery('(min-width:600px)');

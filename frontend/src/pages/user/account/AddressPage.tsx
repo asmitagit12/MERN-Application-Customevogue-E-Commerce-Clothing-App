@@ -49,11 +49,11 @@ const AddressPage: React.FC = () => {
   const [menuAnchor, setMenuAnchor] = useState<null | HTMLElement>(null)
   const [selectedAddressId, setSelectedAddressId] = useState<string | null>(null)
   const [addresses, setAddresses] = useState<any[]>([])
-  const [loading, setLoading] = useState(false)
+  const [, setLoading] = useState(false)
   const user = useSelector((state: RootState) => state.auth.user)
   const userID = user?._id as string
 
-  const { register, handleSubmit, control, reset, formState: { errors } } = useForm<AddressFormData>({
+  const { handleSubmit, control, reset, formState: { errors } } = useForm<AddressFormData>({
     resolver: zodResolver(addressSchema)
   })
 

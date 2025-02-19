@@ -14,7 +14,7 @@ import {
     Checkbox,
     FormGroup,
     FormControlLabel,
-    Container,
+    
     Divider,
     Stack,
     Slider,
@@ -67,8 +67,8 @@ type Filters = {
 const UserCollection: React.FC = () => {
     const [productList, setProductList] = useState<Product[]>([]);
     const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
-    const [categories, setCategories] = useState<string[]>(["Men", "Women", "Kids"]);
-    const [types, setTypes] = useState<string[]>(["Topwear", "Bottomwear", "Winterwear"]);
+    const [categories] = useState<string[]>(["Men", "Women", "Kids"]);
+    const [types] = useState<string[]>(["Topwear", "Bottomwear", "Winterwear"]);
     const [sortOption, setSortOption] = useState<string>("relevant");
     const [filters, setFilters] = useState<Filters>({
         category: "",

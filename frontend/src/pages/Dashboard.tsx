@@ -6,33 +6,22 @@ import {
   Button,
   Card,
   CardActionArea,
-  CardActions,
   CardContent,
   CardMedia,
-  Collapse,
   Divider,
   Grid,
-  IconButton,
-  Paper,
   Stack,
   Typography
 } from '@mui/material'
-import { Favorite, Share, ShoppingCart } from '@mui/icons-material'
 
-import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight'
-import AnimatedCarousel from '../components/controls/AnimatedCarousel'
 import RoundedCarousel from '../components/controls/RoundedCarousel'
 
-type CategoryKey = 'WOMEN' | 'MEN' | 'KIDS' | 'HOME'
 
 type ImageLabel = {
   image: string
   label: string
 }
-type AnimatedLabel = {
-  src: string
-  alt: string
-}
+
 
 type CardData = {
   title: string
@@ -40,20 +29,10 @@ type CardData = {
   image: string
 }
 
-// Define the type for card data
-interface CardDetails {
-  title: string
-  image: string
-  description: string
-  fabric: string
-  color: string
-  occasion: string
-}
+
 
 const Dashboard: React.FC = () => {
-  const [selectedCard, setSelectedCard] = useState<CardData | null>(null)
-  const [selectedCategory, setSelectedCategory] = useState<CategoryKey>('WOMEN')
-  const [expandedIndex, setExpandedIndex] = useState<number | null>(null)
+  
   const scrollRef = useRef<HTMLDivElement>(null)
   const [isDragging, setIsDragging] = useState(false)
   const [startX, setStartX] = useState(0)
@@ -81,14 +60,7 @@ const Dashboard: React.FC = () => {
   const handleMouseLeave = () => {
     setIsDragging(false)
   }
-  const handleToggleDetails = (index: number) => {
-    setExpandedIndex(prevIndex => (prevIndex === index ? null : index))
-  }
-
-  const handleCategoryClick = (category: CategoryKey) => {
-    setSelectedCategory(category)
-  }
-
+  
   const images: string[] = [
     'https://img.theloom.in/pwa/loom/banners/26nov-2024-New-Launches-Desktop-Banner.jpg?tr=h-624%2Cw-1600',
     'https://img.theloom.in/pwa/loom/banners/29nov-2024-Flash-Sale-2024-3840-1500-Main-Desktop-Banner.jpg?tr=h-624%2Cw-1600',
@@ -129,138 +101,7 @@ const Dashboard: React.FC = () => {
     }
   ]
 
-  const animatedImages: AnimatedLabel[] = [
-    {
-      src: 'https://img.theloom.in/pwa/loom/banners/New-Arrivals-24nov-2024.jpg',
-      alt: 'New Arrivals'
-    },
-    {
-      src: 'https://img.theloom.in/pwa/loom/banners/26nov-2024-Winter.jpg',
-      alt: 'Winter Collection'
-    },
-    {
-      src: 'https://img.theloom.in/pwa/loom/banners/13nov-2024-Velvet.jpg',
-      alt: 'Velvet Collection'
-    },
-    {
-      src: 'https://img.theloom.in/pwa/loom/banners/26nov-2024-Winter.jpg',
-      alt: 'Winter Trends'
-    },
-    {
-      src: 'https://img.theloom.in/pwa/loom/banners/13nov-2024-Velvet.jpg',
-      alt: 'Velvet Fashion'
-    },
-    {
-      src: 'https://img.theloom.in/pwa/loom/banners/26nov-2024-Winter.jpg',
-      alt: 'Winter Looks'
-    }
-  ]
-
-  const categories: Record<CategoryKey, ImageLabel[]> = {
-    WOMEN: [
-      {
-        image:
-          'https://assets0.mirraw.com/images/11312833/image_long_webp.webp?1688218823',
-        label: 'Party'
-      },
-      {
-        image:
-          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ6_carfjReP8OP3Ercw_I8GEYiG6hAPMzOhA&s',
-        label: 'Work Wear'
-      },
-      {
-        image:
-          'https://www.libas.in/cdn/shop/files/mehandi_00cad468-e29a-48a3-a8f8-91518a34e600.jpg?v=1733124096',
-        label: 'Festive'
-      },
-      {
-        image:
-          'https://twelvebd.com/cdn/shop/files/RK-BLZ-TW24-11W-60007_7_46e3ba3b-5719-43dd-9cd4-a33bda45e9f3_600x600.jpg?v=1730975381',
-        label: 'Loungewear'
-      },
-      {
-        image:
-          'https://i.pinimg.com/474x/ae/d9/4b/aed94b8187104732e2a07d4c445e95ca.jpg',
-        label: 'Athleisure'
-      },
-      {
-        image:
-          'https://adn-static1.nykaa.com/nykdesignstudio-images/pub/media/catalog/product/5/9/5936b87ILJKATSSK66409_1.jpg?tr=w-512',
-        label: 'Winter'
-      }
-    ],
-    MEN: [
-      {
-        image:
-          'https://5.imimg.com/data5/NC/NH/MY-42416917/mens-party-wear-blazer-500x500.jpg',
-        label: 'Party'
-      },
-      {
-        image:
-          'https://www.westside.com/cdn/shop/articles/formal_shirts_for_men.png?v=1686040385',
-        label: 'Work'
-      },
-      {
-        image:
-          'https://successmenswear.com/cdn/shop/collections/Festive.jpg?v=1698924097',
-        label: 'Festive'
-      },
-      {
-        image:
-          'https://cdn.shopify.com/s/files/1/0825/5533/9035/files/0C8A7624.jpg?v=1716566061&width=700',
-        label: 'Athleisure'
-      },
-      {
-        image:
-          'https://images.bestsellerclothing.in/data/JJ/13-nov-2024/901029802_g0.jpg?width=415&height=550&mode=fill&fill=blur&format=auto',
-        label: 'Winter'
-      }
-    ],
-    KIDS: [
-      {
-        image:
-          'https://www.littlecheer.com/cdn/shop/products/littlecheer-07-may-220820_7fc6588d-824e-4aa7-8fd2-567551315a3a_600x.jpg?v=1677001437',
-        label: 'Casual'
-      },
-      {
-        image:
-          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQH5XdvdygPrSl0rLHPwlje9HqJ842rIvW9xw&s',
-        label: 'Festive'
-      },
-      {
-        image:
-          'https://m.media-amazon.com/images/I/81gma+YEzhL._AC_UY1100_.jpg',
-        label: 'Sleepwear'
-      },
-      {
-        image:
-          'https://www.okboss.co.in/assets/img/home/boysrow1/kids%20dangri%20casual%20wear.jpg',
-        label: 'Party'
-      }
-    ],
-    HOME: [
-      {
-        image:
-          'https://cdn.moolwan.com/4adeec30-c254-43b5-8a18-60e687a67e8e.webp',
-        label: 'Decore'
-      },
-      {
-        image:
-          'https://www.aachho.com/cdn/shop/products/9_63ec4d32-de74-484f-88e7-4a2bf9941d7c_1080x.png?v=1684505569',
-        label: 'Bedding'
-      },
-      {
-        image:
-          'https://ruheindia.com/cdn/shop/files/RoundFoldableTowelRack_24Inches.jpg?v=1723035325&width=460',
-        label: 'Bath'
-      },
-      {
-        image:
-          'https://s.alicdn.com/@sc04/kf/Hba3300cfe94a4659bf04abd53d25fec7l.jpg_720x720q50.jpg',
-        label: 'Kitchen'
-      }
-    ]
-  }
+ 
 
   const cardData: CardData[] = [
     {
@@ -289,49 +130,7 @@ const Dashboard: React.FC = () => {
     }
   ]
 
-  // Example array of card data
-  const cardDetails: CardDetails[] = [
-    {
-      title: 'CustomeVogue Fashion Saree',
-      image:
-        'https://rukminim2.flixcart.com/image/612/612/xif0q/sari/z/0/2/free-daily-wear-avantika-fashion-unstitched-original-imahyz2hbqvdyena.jpeg?q=70',
-      description:
-        'This elegant saree from CustomVogue Fashion is perfect for daily wear. Crafted with premium fabric, it offers both comfort and style.',
-      fabric: 'Cotton Blend',
-      color: 'Green with traditional motifs',
-      occasion: 'Daily wear, Casual events, Traditional ceremonies'
-    },
-    {
-      title: 'Saree for Special Occasions',
-      image:
-        'https://rukminim2.flixcart.com/image/312/312/xif0q/sari/s/g/n/free-seema-bollywood-trendz-most-brand-trusted-top-seller-original-imagxyzzmqed3gpt.jpeg?q=70',
-      description:
-        'A saree perfect for special occasions. Beautiful craftsmanship and intricate designs make it a stunning choice for weddings and cultural ceremonies.',
-      fabric: 'Silk Blend',
-      color: 'Red with gold embroidery',
-      occasion: 'Weddings, Cultural ceremonies, Festivals'
-    },
-    {
-      title: 'Traditional Wedding Saree',
-      image:
-        'https://rukminim2.flixcart.com/image/400/400/xif0q/sari/u/i/d/free-banarasi-red-gold-0-tapovan-fashion-unstitched-original-imah3npdsfbec65t.jpeg?q=70',
-      description:
-        'A traditional wedding saree designed with elegance and sophistication. Perfect for brides and wedding guests looking for a luxurious outfit.',
-      fabric: 'Banarasi Silk',
-      color: 'Gold with maroon',
-      occasion: 'Weddings, Traditional ceremonies'
-    },
-    {
-      title: 'Casual Wear Saree',
-      image:
-        'https://rukminim2.flixcart.com/image/312/312/xif0q/sari/d/z/r/free-organza-cut-sky-vrati-creation-unstitched-original-imah6fpzbvk4zbtb.jpeg?q=70',
-      description:
-        'Lightweight and comfortable, this saree is ideal for casual outings and daily wear. Its breathable fabric and simple design make it versatile for different occasions.',
-      fabric: 'Cotton',
-      color: 'Yellow with floral design',
-      occasion: 'Casual wear, Daily use'
-    }
-  ]
+ 
 
   const ImageCategories: ImageLabel[] = [
     {

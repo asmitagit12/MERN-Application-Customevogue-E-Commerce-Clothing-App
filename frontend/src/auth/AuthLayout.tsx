@@ -1,5 +1,5 @@
 import React from 'react'
-import { Grid, Box, Paper, Typography } from '@mui/material'
+import { Grid, Box, Typography } from '@mui/material'
 import { Link, Outlet } from 'react-router-dom'
 import logo from '../assets/logo.svg'
 

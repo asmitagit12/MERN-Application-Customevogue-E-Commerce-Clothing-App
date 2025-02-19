@@ -7,9 +7,9 @@ import {
   ListItemIcon,
   ListItemText,
   Collapse,
-  IconButton,
+ 
   Typography,
-  Divider,
+
   useMediaQuery,
   Stack,
   Box
@@ -17,7 +17,7 @@ import {
 import { Home, Settings } from '@mui/icons-material' // Home and Settings icons
 import ExpandLess from '@mui/icons-material/ExpandLess' // Icon for collapsing submenus
 import ExpandMore from '@mui/icons-material/ExpandMore' // Icon for expanding submenus
-import { Inventory2, Category, Person } from '@mui/icons-material'
+import { Inventory2,  Person } from '@mui/icons-material'
 import logo from '../../assets/logo.svg'
 
 interface IMenuItem {

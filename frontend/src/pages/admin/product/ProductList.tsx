@@ -80,7 +80,6 @@ const ProductList = () => {
   }, [])
 
   const handleChangePage = (
-    event: React.ChangeEvent<unknown>,
     page: number
   ) => {
     setCurrentPage(page)
@@ -151,14 +150,7 @@ const ProductList = () => {
     handleMenuClose()
   }
 
-  const handleViewDetails = () => {
-    console.log('View details for product:', selectedProduct)
-    handleMenuClose()
-  }
 
-  const handleChange = (event: React.MouseEvent<HTMLElement>, nextView: string) => {
-    setView(nextView);
-  };
   return (
     <Box>
       <Grid
@@ -178,7 +170,7 @@ const ProductList = () => {
             <Pagination
               count={Math.ceil(productList.length / itemsPerPage)}
               page={currentPage}
-              onChange={handleChangePage}
+              onChange={() => handleChangePage}
               color='primary'
               sx={{ whiteSpace: 'nowrap' }}
             />
@@ -200,9 +192,10 @@ const ProductList = () => {
             sx={{ height: 35 }}
             size="small"
             exclusive
-            onChange={(event, nextView) => {
-              if (nextView !== null) setView(nextView);
+            onChange={(nextView: unknown) => {
+              if (typeof nextView === "string") setView(nextView);
             }}
+            
           >
             <ToggleButton value="list" aria-label="list">
               <ViewListIcon />
@@ -215,109 +208,7 @@ const ProductList = () => {
       </Grid>
       <Divider variant='fullWidth' sx={{ m: 1, mb: 2 }} />
 
-      {/* Product Grid */}
-      {/* <Grid container spacing={3}>
-        {paginatedProducts.map(product => (
-          <Grid item xs={12} sm={6} md={6} lg={4} key={product._id}>
-            <Card
-              sx={{
-                height: '90%',
-                p: 1,
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                flexDirection: 'column'
-              }}
-            >
-              <Stack
-                direction={'row'}
-                spacing={1}
-                alignItems={'start'}
-                justifyContent={'space-between'}
-                width={'100%'}
-                pt={1}
-              >
-                <Stack direction={'row'} spacing={1}>
-                  <CardMedia
-                    component='img'
-                    style={{ width: 80, height: 'auto' }}
-                    image={
-                      `${baseUrl}/uploads/${product.images[0]}` ||
-                      NoImage ||
-                      'Placeholder.jpg'
-                    }
-                    alt={product.name}
-                  />
-                  <Stack>
-                    <Typography sx={{ fontFamily: 'Roboto', fontSize: 18, textTransform: 'capitalize' }} fontWeight='bold'>
-                      {product?.name}
-                    </Typography>
-                    <Typography variant='body2' color='textSecondary'>
-                      {product?.category?.name}
-                    </Typography>
-                    <Typography variant='h6' fontWeight='bold' marginTop={1}>
-                      ₹{product?.price?.toFixed(2)}
-                    </Typography>
-                  </Stack>
-                </Stack>
-                <Tooltip title='More Actions'>
-                  <IconButton onClick={event => handleMenuOpen(event, product)}>
-                    <MoreVertIcon />
-                  </IconButton>
-                </Tooltip>
-              </Stack>
-
-              <CardContent
-                sx={{ marginTop: 'auto', width: '100%', height: 'auto' }}
-              >
-                <Typography variant='body2' color='textSecondary' sx={{ mt: 1, textTransform: 'capitalize' }}>
-                  {product?.description}
-                </Typography>
-                <Stack
-                  spacing={0.5}
-                  sx={{
-                    mt: 1,
-                    border: '1px solid gray',
-                    borderRadius: 3,
-                    p: 2
-                  }}
-                >
-                  <Stack
-                    direction={'row'}
-                    display='flex'
-                    justifyContent='space-between'
-                  >
-                    <Typography variant='body2' fontWeight='bold'>
-                      Sales
-                    </Typography>
-
-                    <Typography variant='body2' color='primary'>
-                      ↑ {Math.floor(Math.random() * 5000)}
-                    </Typography>
-                  </Stack>
-                  <Divider />
-                  <Stack
-                    direction={'row'}
-                    display='flex'
-                    justifyContent='space-between'
-                    alignItems='center'
-                  >
-                    <Typography variant='body2' fontWeight='bold'>
-                      Remaining Products
-                    </Typography>
-                    <Typography variant='body2'>{product.stock}</Typography>
-                    <LinearProgress
-                      variant='determinate'
-                      value={(product.stock / 100) * 100}
-                      sx={{ marginTop: 1, width: 40 }}
-                    />
-                  </Stack>
-                </Stack>
-              </CardContent>
-            </Card>
-          </Grid>
-        ))}
-      </Grid> */}
+      
       {/* Product View */}
       <Grid container spacing={3}>
         {view === 'list' ? (

@@ -51,10 +51,8 @@ type SubCategoryFormData = z.infer<typeof subCategorySchema>
 
 const SubCategoryList = () => {
   const { categoryId } = useParams() // Correctly extract `categoryId` from params
-  const [categories, setCategories] = useState<any[]>([])
   const [subCategories, setSubCategories] = useState<any[]>([])
   const [filteredSubCategories, setFilteredSubCategories] = useState<any[]>([])
-  const [search, setSearch] = useState<string>('') // For search functionality
   const [headers, setHeaders] = useState<string[]>([])
   const [page, setPage] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(10)
@@ -64,7 +62,6 @@ const SubCategoryList = () => {
   const [subCategoriesSelected, setSubCategoriesSelected] = useState<string[]>(
     []
   ) // Store added subcategories
-  const [inputValue, setInputValue] = useState<string>('') // Temporary input field value
   const [open, setOpen] = useState(false)
 
   const {
@@ -97,8 +94,7 @@ const SubCategoryList = () => {
             setSelectedCategory(foundCategory.name)
           }
 
-          // Store all categories in state
-          setCategories(categoryData)
+         
         }
       } catch (error: any) {
         console.error('Failed to fetch categories:', error.message)
@@ -137,14 +133,7 @@ const SubCategoryList = () => {
     fetchSubCategories()
   }, [categoryId])
 
-  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const query = event.target.value.toLowerCase()
-    setSearch(query)
-    const filtered = subCategories.filter(subCategory =>
-      subCategory.name.toLowerCase().includes(query)
-    )
-    setFilteredSubCategories(filtered)
-  }
+ 
 
   const handleChangePage = (_event: unknown, newPage: number) => {
     setPage(newPage)
@@ -436,13 +425,12 @@ const SubCategoryList = () => {
                       id='subcategories-autocomplete'
                       options={['T-Shirts & Polos', 'Shirts']} // Suggestion options
                       value={subCategoriesSelected}
-                      onChange={(event, newValue) => {
-                        setSubCategoriesSelected(newValue)
-                        setValue('subCategory', newValue)
+                      onChange={(newValue: unknown) => {
+                        setSubCategoriesSelected(newValue as string[]);
+                        setValue("subCategory", newValue as string[]);
                       }}
-                      onInputChange={(event, newInputValue) => {
-                        setInputValue(newInputValue)
-                      }}
+                      
+                     
                       renderInput={params => (
                         <TextField
                           {...params}

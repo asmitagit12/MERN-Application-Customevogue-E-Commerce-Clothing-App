@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Grid, Typography, Button, Card, CardMedia, Stack, Divider } from "@mui/material";
+import { Box, Grid, Typography, Button, Card, CardMedia } from "@mui/material";
 import contact from '../assets/contact_img.png'
 
 const ContactUs: React.FC = () => {

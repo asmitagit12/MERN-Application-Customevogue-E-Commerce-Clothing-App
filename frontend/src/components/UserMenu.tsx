@@ -141,7 +141,7 @@ const UserMenu: React.FC = () => {
             }
           }}
         >
-          {menuItems.map(({ label, icon, action }, index) => (
+          {menuItems.map(({ label, icon, action }) => (
             <MenuItem
               key={label}
               onClick={() => {
