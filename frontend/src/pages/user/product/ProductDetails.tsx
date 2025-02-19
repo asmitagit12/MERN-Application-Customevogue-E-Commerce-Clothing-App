@@ -103,8 +103,8 @@ const ProductDetails: React.FC = () => {
           <Stack spacing={1}>
             <Breadcrumbs maxItems={5} aria-label='breadcrumb' sx={{ fontSize: 13 }}>
               <Link color='inherit' underline='none' href={'/'}>Home</Link>
-              <Link color='inherit' underline='none' href={'/collection'}>{product.category.name}</Link>
-              <Link color='inherit' underline='none' href={'/collection'}>{product.subCategory.name}</Link>
+              <Link color='inherit' underline='none' href={'/collection'}>{product?.category?.name}</Link>
+              <Link color='inherit' underline='none' href={'/collection'}>{product?.subCategory?.name}</Link>
               <Typography sx={{ color: 'text.primary', fontSize: 13 }}>{product.name}</Typography>
             </Breadcrumbs>
             <Typography variant='h5'>{product.name}</Typography>
