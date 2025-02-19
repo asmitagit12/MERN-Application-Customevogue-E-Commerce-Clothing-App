@@ -187,7 +187,7 @@ const CartPage: React.FC = () => {
   const navigate = useNavigate()
   const [openConfirm, setOpenConfirm] = useState(false)
   const [selectedProduct, setSelectedProduct] = useState<any>(null)
-
+console.log(cartItems)
   const calculateTotalPrice = () => {
     return cartItems.reduce(
       (acc, item) => acc + item.price * item.quantity,
