@@ -28,13 +28,33 @@ const PORT = process.env.PORT || 5000
 // MONGO_URI="mongodb+srv://asmita:1234@clothing-app.fi3cy.mongodb.net/clothing-app?retryWrites=true&w=majority&appName=clothing-app"
 // PORT=5000
 // JWT_SECRET="jwt"
+// Allow frontend origin
+const allowedOrigins = ['https://ap-customevogue-mern.vercel.app'];
+
 app.use(cors({
-  origin: '*', // Temporarily allow all origins (for debugging)
-  methods: 'GET,POST',
-  allowedHeaders: 'Content-Type,Authorization'
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
-app.options('*', cors()); // Handle preflight
+// Handle preflight requests
+app.options('*', cors());
+
+// Ensure every response contains CORS headers
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', 'https://ap-customevogue-mern.vercel.app');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  res.header('Access-Control-Allow-Credentials', 'true');
+  next();
+}); // Handle preflight
 
 app.use(express.json())
 
