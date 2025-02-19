@@ -29,8 +29,17 @@ const PORT = process.env.PORT || 5000
 // PORT=5000
 // JWT_SECRET="jwt"
 app.use(cors({
-  origin: ['https://ap-customevogue-mern.vercel.app'], // Allow only your frontend
-  methods: 'GET,POST,PUT,DELETE',
+  origin: (origin, callback) => {
+    const allowedOrigins = ['https://ap-customevogue-mern.vercel.app'];
+    
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true,
+  methods: 'GET,POST,PUT,DELETE,OPTIONS',
   allowedHeaders: 'Content-Type,Authorization'
 }));
 
