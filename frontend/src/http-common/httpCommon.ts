@@ -6,7 +6,7 @@ const http = axios.create({
   headers: {
     'Content-Type': 'application/json'
   },
-  withCredentials:true
+  // withCredentials:true
 })
 
 // Add token to headers
