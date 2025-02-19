@@ -21,11 +21,7 @@ connectDB()
 
 const app = express()
 const PORT = process.env.PORT || 5000
-//MONGO_URI="mongodb://localhost:27017/online-shop"
-// MONGO_URI="mongodb+srv://asmita:1234@clothing-app.fi3cy.mongodb.net/clothing-app?retryWrites=true&w=majority&appName=clothing-app"
-// PORT=5000
-// JWT_SECRET="jwt"
-// Allow frontend origin
+
 const allowedOrigins = [
   'https://ap-customevogue-mern.vercel.app',
   'https://ap-customevogue.vercel.app'
