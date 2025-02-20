@@ -29,14 +29,12 @@ mediaRouter.post(
         return // Ensure we return early here to avoid executing the rest of the code
       }
 
-      // Debugging: Log the uploaded files
-      console.log('Uploaded files:', req.files)
+     
 
       // Generate image names based on product ID
       const imageNames = (req.files as Express.Multer.File[]).map(
         file => file.filename
       ) // Store only the filename, not the full path
-      console.log('Generated image names:', imageNames)
 
       // Find the product and update its images
       const product = await Product.findByIdAndUpdate(
@@ -52,7 +50,6 @@ mediaRouter.post(
 
       res.status(200).json({ message: 'Images added successfully', product })
     } catch (error: any) {
-      console.error(error) // Log the error for debugging
       res.status(500).json({ error: error.message })
     }
   }
@@ -87,14 +84,13 @@ mediaRouter.post('/delete-image/:productId', async (req: Request, res: Response)
 
     unlink(imagePath, (err) => {
       if (err) {
-        console.error('Error deleting the image file:', err);
+        // console.error('Error deleting the image file:', err);
         // Not throwing error here, just logging
       }
     });
 
     res.status(200).json({ message: 'Image deleted successfully', product });
   } catch (error: any) {
-    console.error(error);
     res.status(500).json({ error: error.message });
   }
 });

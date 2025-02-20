@@ -76,7 +76,6 @@ const ProfilePage: React.FC = () => {
         try {
           const res = await getUserProfile(userId)
           const userData = res.data
-          console.log('userData',userData)
           // Set form values based on the user data received
           setValue('firstName', userData.firstName)
           setValue('lastName', userData.lastName)
@@ -85,13 +84,11 @@ const ProfilePage: React.FC = () => {
           // You can also set the profile picture if it's part of the user data
           // setProfilePic(userData.profilePic || 'https://via.placeholder.com/150')
         } catch (error) {
-          console.error('Error fetching user profile:', error)
         }
       }
   
       fetchUserProfile()
     }else{
-      console.error('User ID is undefined, cannot fetch profile')
     }
   }, [userId, setValue])
 
@@ -104,7 +101,6 @@ const ProfilePage: React.FC = () => {
         toast.error('Error updating user profile')
       }
     } else {
-      console.error('User ID is undefined')
     }
   }
 
@@ -162,7 +158,7 @@ const ProfilePage: React.FC = () => {
 
         <form onSubmit={handleSubmit(onSubmit)}>
           <Grid container spacing={3}>
-            <Grid item lg={6}>
+            <Grid item lg={6} xs={12} md={6}>
               <Controller
                 name='firstName'
                 control={control}
@@ -182,7 +178,7 @@ const ProfilePage: React.FC = () => {
               />
             </Grid>
 
-            <Grid item lg={6}>
+            <Grid item lg={6} xs={12} md={6}>
               <Controller
                 name='lastName'
                 control={control}
@@ -202,7 +198,7 @@ const ProfilePage: React.FC = () => {
               />
             </Grid>
 
-            <Grid item lg={6}>
+            <Grid item lg={6} xs={12} md={6}>
               <Controller
                 name='email'
                 control={control}
@@ -222,7 +218,7 @@ const ProfilePage: React.FC = () => {
               />
             </Grid>
 
-            <Grid item lg={6}>
+            <Grid item lg={6} xs={12} md={6}>
               <Controller
                 name='mobile'
                 control={control}
@@ -242,7 +238,7 @@ const ProfilePage: React.FC = () => {
               />
             </Grid>
 
-            <Grid item lg={12}>
+            <Grid item lg={12} xs={12}>
               <Box display='flex' justifyContent='flex-end' gap={2}>
                 <Button
                   variant='contained'
@@ -274,7 +270,7 @@ const ProfilePage: React.FC = () => {
                       backgroundColor: isEditing ? 'inherit' : '#e3f2fd'
                     }
                   }}
-                  startIcon={isEditing ? <CancelIcon /> : <EditIcon />}
+                  endIcon={isEditing ? <CancelIcon /> : <EditIcon />}
                 >
                   {isEditing ? 'Cancel' : 'Edit'}
                 </Button>

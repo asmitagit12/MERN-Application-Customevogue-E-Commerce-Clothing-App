@@ -36,7 +36,6 @@ export const getCategoryById = async (req: Request, res: Response): Promise<void
 
     successResponse(res, 'Category fetched successfully', category);
   } catch (error) {
-    console.error('Error fetching category by ID:', error);
     errorResponse(res, 500, 'Error fetching category');
   }
 };
@@ -92,7 +91,6 @@ export const updateCategory = async (req: Request, res: Response): Promise<void>
 
     successResponse(res, 'Category updated successfully', updatedCategory);
   } catch (error) {
-    console.error('Error updating category:', error);
     errorResponse(res, 500, 'Error updating category');
   }
 };
@@ -119,7 +117,6 @@ export const deleteCategory = async (req: Request, res: Response): Promise<void>
 
     successResponse(res, 'Category deleted successfully', deletedCategory);
   } catch (error) {
-    console.error('Error deleting category:', error);
     errorResponse(res, 500, 'Error deleting category');
   }
 };

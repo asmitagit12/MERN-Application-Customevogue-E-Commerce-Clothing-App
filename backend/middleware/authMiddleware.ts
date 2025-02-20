@@ -23,14 +23,12 @@ export const authenticate = (
 ): void => {
   const authHeader = req.headers.authorization;
   if (!authHeader) {
-    console.error("No Authorization header provided"); // Debug
     errorResponse(res, 401, "Authentication failed: No token provided");
     return;
   }
 
   const token = authHeader.split(" ")[1];
   if (!token) {
-    console.error("Token missing in Authorization header"); // Debug
     errorResponse(res, 401, "Authentication failed: Invalid token format");
     return;
   }
@@ -39,7 +37,6 @@ export const authenticate = (
     const decoded = jwt.verify(token, secretKey) as JwtPayload;
     req.user = { userId: decoded.userId, role: decoded.role };
     if (!decoded.role || !decoded.userId) {
-      console.log("Not authorized");
       errorResponse(res, 401, "Unauthorized user");
       return;
     }
@@ -49,7 +46,6 @@ export const authenticate = (
     // res.locals["email"] = decoded.email;
     next();
   } catch (error) {
-    console.error("Token verification failed:", error); // Debug
     errorResponse(res, 401, "Invalid or expired token");
   }
 };
@@ -84,7 +80,6 @@ export const isAdmin = (
   }
 
   if (req.user.role !== 'admin') {
-    console.warn(`Admin access denied. User role: ${req.user.role}`) // Debug
     errorResponse(res, 403, 'Forbidden: Admins only')
     return
   }

@@ -34,7 +34,6 @@ const CartPage: React.FC = () => {
   const navigate = useNavigate()
   const [openConfirm, setOpenConfirm] = useState(false)
   const [selectedProduct, setSelectedProduct] = useState<any>(null)
-console.log(cartItems)
   const calculateTotalPrice = () => {
     return cartItems.reduce(
       (acc, item) => acc + item.price * item.quantity,
@@ -65,7 +64,6 @@ console.log(cartItems)
   }
 
   const handleAddToWishlist = (product: any) => {
-    console.log('product', product)
     // Check if the product is already in the wishlist
     const existingItem = wishlistItems?.find((item: any) => item._id === product._id);
 

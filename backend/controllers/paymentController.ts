@@ -34,7 +34,6 @@ export const createPaymentIntent = async (req: Request, res: Response) => {
     // Respond with the client secret to confirm the payment on the frontend
     res.status(200).json({ clientSecret: paymentIntent.client_secret });
   } catch (error) {
-    console.error(error);
     res.status(500).json({ error: "Failed to create payment intent" });
   }
 };
@@ -69,7 +68,6 @@ export const confirmPayment = async (req: Request, res: Response) => {
 
     res.status(200).json(payment);
   } catch (error) {
-    console.error(error);
     res.status(500).json({ error: "Failed to confirm payment" });
   }
 };

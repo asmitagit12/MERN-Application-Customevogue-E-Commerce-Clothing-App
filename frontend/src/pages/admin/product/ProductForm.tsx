@@ -126,7 +126,6 @@ const ProductForm = () => {
             setSizes(productData?.sizes || []) // Set sizes
           }
         } catch (error: any) {
-          console.error('Failed to fetch product:', error.message)
         }
       }
     }
@@ -183,7 +182,6 @@ const ProductForm = () => {
           setCategoryList(categoryData)
         }
       } catch (error: any) {
-        console.error('Failed to fetch categories:', error.message)
       }
     }
     fetchCategories()
@@ -204,7 +202,6 @@ const ProductForm = () => {
 
         setSubCategoryList(subCategoryData) // Store the fetched subcategories
       } catch (error: any) {
-        console.error('Failed to fetch subcategories:', error.message)
       }
     }
     fetchSubCategories()
@@ -224,7 +221,6 @@ const ProductForm = () => {
   const handleImagesChange = (newImages: File[]) => {
     setValue('images', newImages) // Update form state with the combined images
 
-    console.log('Updated images:', newImages) // Debugging
   }
 
   const onSubmit = async (data: ProductFormData) => {
@@ -242,7 +238,6 @@ const ProductForm = () => {
           productId: product._id
         }
 
-        console.log('Update payload:', payload)
 
         const res = await updateProduct(payload)
 
@@ -252,20 +247,17 @@ const ProductForm = () => {
           const existingImages = product.images || [] // Ensure existing images are considered
 
           if (newImages.length > 0) {
-            console.log('Uploading new images for product:', productId)
             await uploadImages(newImages, productId)
           }
 
           // Merge existing and new images for consistent state
-          const updatedImages = [...existingImages, ...newImages]
-          console.log('Updated images:', updatedImages)
+          // const updatedImages = [...existingImages, ...newImages]
 
           toast.success('Product and images successfully updated!')
           navigate('/admin/products')
         }
       } else {
         // Add Product
-        console.log('Add data:', data)
 
         const res = await addProduct(data)
 
@@ -274,7 +266,6 @@ const ProductForm = () => {
           const newImages = data.images || []
 
           if (newImages.length > 0) {
-            console.log('Uploading new images for product:', productId)
             await uploadImages(newImages, productId)
           }
 
@@ -285,7 +276,6 @@ const ProductForm = () => {
     } catch (error: any) {
       const errorMessage =
         error.response?.data?.message || error.message || 'Operation failed'
-      console.error('Error:', errorMessage)
       toast.error(errorMessage)
     } finally {
       reset()
@@ -373,7 +363,6 @@ const ProductForm = () => {
                           value={selectedCategory}
                           onChange={e => {
                             const value = e.target.value
-                            console.log(value)
                             setSelectedCategory(value)
                             field.onChange(value)
                             setSelectedSubCategory('') // Reset subcategory on category change

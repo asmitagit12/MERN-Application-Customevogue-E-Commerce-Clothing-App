@@ -15,7 +15,6 @@ export const getAllSubCategories = async (
     const subCategories = await SubCategory.find().lean() // Use lean for better performance if only reading
     successResponse(res, 'Subcategories fetched successfully', subCategories)
   } catch (error) {
-    console.error('Error fetching subcategories:', error)
     errorResponse(res, 500, 'Error fetching subcategories')
   }
 }
@@ -48,7 +47,6 @@ export const getSubCategoriesByCategoryId = async (
 
     successResponse(res, 'Subcategories fetched successfully', subCategories)
   } catch (error) {
-    console.error('Error fetching subcategories by categoryId:', error)
     errorResponse(res, 500, 'Error fetching subcategories')
   }
 }
@@ -120,7 +118,6 @@ export const addSubCategory = async (
 
     successResponse(res, 'Subcategories added successfully', savedSubCategories)
   } catch (error) {
-    console.error('Error adding subcategories:', error)
     errorResponse(res, 500, 'Error adding subcategories')
   }
 }
@@ -158,7 +155,6 @@ export const updateSubCategory = async (
 
     successResponse(res, 'Subcategory updated successfully', updatedSubCategory)
   } catch (error) {
-    console.error('Error updating subcategory:', error)
     errorResponse(res, 500, 'Error updating subcategory')
   }
 }
@@ -214,7 +210,6 @@ export const deleteSubCategory = async (
 
     successResponse(res, 'Subcategory deleted successfully', deletedSubCategory)
   } catch (error: any) {
-    console.error('Error deleting subcategory:', error)
     errorResponse(res, 500, 'Error deleting subcategory')
   }
 }

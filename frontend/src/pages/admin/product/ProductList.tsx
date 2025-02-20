@@ -73,7 +73,6 @@ const ProductList = () => {
           setProductList(productData)
         }
       } catch (error: any) {
-        console.error('Failed to fetch Products:', error.message)
       }
     }
     fetchProducts()
@@ -105,7 +104,6 @@ const ProductList = () => {
 
   const handleEdit = () => {
     navigate(`/admin/update-product/${selectedProduct?._id}`)
-    console.log('Edit product:', selectedProduct)
     handleMenuClose()
   }
 
@@ -138,7 +136,6 @@ const ProductList = () => {
     } catch (error: any) {
       const errorMessage =
         error.response?.data?.message || error.message || 'Failed to delete'
-      console.error('delete product error:', errorMessage)
       toast.error(errorMessage)
     }
     setOpenConfirm(false) // Close the dialog after confirmation

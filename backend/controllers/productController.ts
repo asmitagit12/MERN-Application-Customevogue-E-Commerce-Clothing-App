@@ -63,7 +63,6 @@ export const addProduct = async (
 
     successResponse(res, 'Product added successfully', savedProduct)
   } catch (error) {
-    console.error('Error adding product:', error)
     errorResponse(res, 500, 'Internal server error')
   }
 }
@@ -144,7 +143,6 @@ export const updateProduct = async (
     // Return the updated product
     successResponse(res, 'Product updated successfully', updatedProduct)
   } catch (error) {
-    console.error('Error updating product:', error)
     errorResponse(res, 500, 'Internal server error')
   }
 }
@@ -232,7 +230,6 @@ export const getAllProducts = async (
 
     successResponse(res, 'Filtered Products fetched', enrichedProducts)
   } catch (error) {
-    console.error('Error fetching products:', error)
     errorResponse(res, 500, 'Error fetching products')
   }
 }
@@ -261,7 +258,6 @@ export const deleteProduct = async (
 
     successResponse(res, 'Product deleted successfully', deletedProduct)
   } catch (error) {
-    console.error('Error deleting product:', error)
     errorResponse(res, 500, 'Error deleting product')
   }
 }
@@ -296,7 +292,6 @@ export const getProductById = async (
 
     successResponse(res, 'Product fetched successfully', product)
   } catch (error) {
-    console.error('Error fetching product:', error)
     errorResponse(res, 500, 'Error fetching product')
   }
 }

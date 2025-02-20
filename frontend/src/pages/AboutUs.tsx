@@ -1,6 +1,7 @@
 import React from "react";
 import { Box, Grid, Typography, Card, CardMedia } from "@mui/material";
 import about from '../assets/about.png'
+
 const AboutUs: React.FC = () => {
   return (
     <Box sx={{ maxWidth: "1200px", mx: "auto", py: { xs: 3, md: 5 }, px: { xs: 2, sm: 3, md: 5 } }}>
@@ -23,42 +24,45 @@ const AboutUs: React.FC = () => {
         container
         spacing={4}
         alignItems="flex-start"
+        justifyContent="flex-start"
         sx={{
           flexDirection: { xs: "column", md: "row" },
           textAlign: { xs: "center", md: "left" },
         }}
       >
         {/* Image Section */}
-        <Grid item xs={12} md={6}>
-          <Card elevation={0} sx={{ borderRadius: "10px", overflow: "hidden" }}>
+        <Grid item xs={12} md={6} sx={{ display: "flex", justifyContent: "center" }}>
+          <Card elevation={0} sx={{ borderRadius: "10px", overflow: "hidden", maxWidth: { xs: "100%", sm: "80%", md: "100%" }, display: "flex", justifyContent: "center" }}>
             <CardMedia
               component="img"
               image={about} // Replace with actual image
               alt="Fashion collection"
               sx={{
                 width: "100%",
-                height: { xs: "250px", sm: "300px", md: "100%" },
+                height: 'auto',
                 objectFit: "cover",
+                display: "block",
+                margin: "0 auto"
               }}
             />
           </Card>
         </Grid>
 
         {/* About Us Content */}
-        <Grid item xs={12} md={6}>
-          <Typography variant="body1" sx={{ mb: 2, fontSize: { xs: "0.9rem", md: "1rem" } }}>
+        <Grid item xs={12} md={6} sx={{ display: "flex", flexDirection: "column", alignItems: 'center',justifyContent:'flex-start' }}>
+          <Typography variant="body1" sx={{ mb: 2, fontSize: { xs: "0.9rem", md: "1rem" }, textAlign: { xs: "center", md: "left" } }}>
             Constumevogue was born out of a passion for innovation and a desire to revolutionize the way people shop online. Our journey began with a simple idea: to provide a platform where customers can easily discover, explore, and purchase a wide range of products from the comfort of their homes.
           </Typography>
 
-          <Typography variant="body1" sx={{ mb: 2, fontSize: { xs: "0.9rem", md: "1rem" } }}>
+          <Typography variant="body1" sx={{ mb: 2, fontSize: { xs: "0.9rem", md: "1rem" }, textAlign: { xs: "center", md: "left" } }}>
             Since our inception, we’ve worked tirelessly to curate a diverse selection of high-quality products that cater to every taste and preference. From fashion and beauty to electronics and home essentials, we offer an extensive collection sourced from trusted brands and suppliers.
           </Typography>
 
           {/* Mission Section */}
-          <Typography variant="h6" sx={{ fontWeight: "bold", mt: 3, fontSize: { xs: "1.2rem", md: "1.5rem" } }}>
+          <Typography variant="h6" sx={{ fontWeight: "bold", mt: 3, fontSize: { xs: "1.2rem", md: "1.5rem" }, textAlign: { xs: "center", md: "left" } }}>
             Our Mission
           </Typography>
-          <Typography variant="body2" color="textSecondary" sx={{ fontSize: { xs: "0.9rem", md: "1rem" } }}>
+          <Typography variant="body2" color="textSecondary" sx={{ fontSize: { xs: "0.9rem", md: "1rem" }, textAlign: { xs: "center", md: "left" } }}>
             Our mission at Constumevogue is to empower customers with choice, convenience, and confidence. We’re dedicated to providing a seamless shopping experience that exceeds expectations, from browsing and ordering to delivery and beyond.
           </Typography>
         </Grid>

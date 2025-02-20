@@ -63,7 +63,6 @@ const Checkout: React.FC = () => {
         const response = await getUserAddresses(userID)
         setAddresses(response.data)
       } catch (error) {
-        console.error("Failed to fetch addresses", error)
       } finally {
         // setLoading(false)
       }
@@ -80,8 +79,8 @@ const Checkout: React.FC = () => {
    const savings = totalPrice > 1000 ? 100 : 50;
    const totalPayable = totalPrice + deliveryCharges + platformFee - savings;
   return (
-    <Box display="flex" justifyContent="center" p={3}>
-      <Box width="60%" mr={3}>
+    <Box display="flex" flexWrap={'wrap'} justifyContent="center" rowGap={2} flexDirection={{xs:'column',md:'row'}} height={'auto'} p={3}>
+      <Box  width={{ xs: "100%", md: "60%" }}  mr={3}>
         <Accordion
           expanded={currentStep === 1}
           onChange={() => setCurrentStep(1)}
@@ -253,7 +252,7 @@ const Checkout: React.FC = () => {
       </Box>
 
      {/* Right Section - Price Details */}
-     <Box width="30%">
+     <Box width={{ xs: "100%", md: "30%" }}>
         <Card variant="outlined">
           <CardContent>
             <Typography variant="h6" fontWeight="bold">

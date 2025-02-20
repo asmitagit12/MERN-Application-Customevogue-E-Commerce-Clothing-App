@@ -28,7 +28,6 @@ const AdminProductDetails = () => {
         setProduct(response?.data) // Assuming the response is in `data`
         setSelectedImage(response?.data?.images[0] || '') // Set the first image as default
       } catch (error: any) {
-        console.error('Failed to fetch product:', error.message)
       }
     }
     fetchSingleProduct()

@@ -122,8 +122,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
         prevImages.filter((_, i) => i !== index)
       )
     } catch (error: any) {
-      toast.error('Failed to delete the image. Please try again.')
-      console.error(error.message)
+      toast.error( error.message || 'Failed to delete the image. Please try again.')
     }
   }
 

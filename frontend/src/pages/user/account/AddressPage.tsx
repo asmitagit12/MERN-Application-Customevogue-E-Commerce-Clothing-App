@@ -65,8 +65,7 @@ const AddressPage: React.FC = () => {
       try {
         const response = await getUserAddresses(userID)
         setAddresses(response.data)
-      } catch (error) {
-        console.error("Failed to fetch addresses", error)
+      } catch (error:any) {
       } finally {
         setLoading(false)
       }
@@ -106,7 +105,6 @@ const AddressPage: React.FC = () => {
         setAddresses(prevAddresses => prevAddresses.filter(address => address._id !== selectedAddressId))
         toast.success('Address deleted successfully')
       } catch (error) {
-        console.error("Failed to delete address", error)
         toast.error('An error occurred while deleting the address')
       }
     }
@@ -136,7 +134,7 @@ const AddressPage: React.FC = () => {
 
   return (
     <Box sx={{ p: 2, backgroundColor: '#f5f5f5' }}>
-      <Stack direction={'row'} sx={{display:'flex',justifyContent:'space-between'}}>
+      <Stack direction={{md:'row',xs:'column'}} sx={{display:'flex',justifyContent:'space-between'}}>
 
       {/* Title */}
       <Typography sx={{fontSize:21}} gutterBottom>

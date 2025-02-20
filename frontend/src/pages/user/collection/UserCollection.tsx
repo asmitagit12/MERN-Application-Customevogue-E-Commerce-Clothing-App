@@ -113,7 +113,6 @@ const UserCollection: React.FC = () => {
                 if (productData && productData.length > 0) {
                     setProductList(productData);
                     setFilteredProducts(productData);
-                    console.log(productData)
                 }
             } catch (error: any) {
                 console.error('Failed to fetch Products:', error.message);

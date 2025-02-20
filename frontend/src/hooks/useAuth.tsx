@@ -28,7 +28,6 @@ const useAuth = () => {
           setUserRole(null);
         }
       } catch (error) {
-        console.error('Error decoding token:', error);
         setIsAuthenticated(false);
         setUserRole(null);
       }

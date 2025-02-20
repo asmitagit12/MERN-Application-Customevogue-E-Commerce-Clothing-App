@@ -13,6 +13,8 @@ import { useForm, Controller } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from 'zod'
 import { registerUser } from '../services/auth/authServices'
+import toast from 'react-hot-toast'
+import { useNavigate } from 'react-router-dom'
 
 const SignUpSchema = z.object({
   firstName: z.string().min(1, 'First name is required'),
@@ -32,15 +34,16 @@ const SignUp: React.FC = () => {
   } = useForm<SignUnFormInputs>({
     resolver: zodResolver(SignUpSchema)
   })
+  const navigate = useNavigate()
 
   const onSubmit = async (data: SignUnFormInputs) => {
-    console.log(data)
     try {
       const response = await registerUser(data)
-
-      console.log('Login successful:', response)
+      console.log(response)
+      toast.success("Sign Up successful")
+      navigate('/auth/signin')
     } catch (error: any) {
-      console.error(
+      toast.error(
         'Login error:',
         error.response?.data?.message || error.message
       )

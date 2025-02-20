@@ -97,7 +97,7 @@ const SubCategoryList = () => {
          
         }
       } catch (error: any) {
-        console.error('Failed to fetch categories:', error.message)
+       
       }
     }
     fetchCategories()
@@ -107,10 +107,10 @@ const SubCategoryList = () => {
     const fetchSubCategories = async () => {
       try {
         const response = await getSubCategories(categoryId || '') // Ensure `categoryId` is provided
-        console.log('API Response:', response) // Log response for debugging
+        // Log response for debugging
 
         if (!response?.data || response?.data.length === 0) {
-          console.warn('No subcategories found.')
+         
           setSubCategories([]) // Handle empty response
           setFilteredSubCategories([])
           return
@@ -121,13 +121,11 @@ const SubCategoryList = () => {
         const filteredHeaders = Object.keys(subCategoryData[0]).filter(
           key => !excludedFields.includes(key)
         )
-        console.log('Filtered Headers:', filteredHeaders)
 
         setHeaders(filteredHeaders)
         setSubCategories(subCategoryData) // Store the fetched subcategories
         setFilteredSubCategories(subCategoryData) // Initialize filtered list
       } catch (error: any) {
-        console.error('Failed to fetch subcategories:', error.message)
       }
     }
     fetchSubCategories()
@@ -179,7 +177,6 @@ const SubCategoryList = () => {
     } catch (error: any) {
       const errorMessage =
         error.response?.data?.message || error.message || 'Failed to add';
-      console.error('add sub category error:', errorMessage);
       toast.error(errorMessage);
     }
     
@@ -220,7 +217,6 @@ const SubCategoryList = () => {
     } catch (error: any) {
       const errorMessage =
         error.response?.data?.message || error.message || 'Failed to delete'
-      console.error('delete sub category error:', errorMessage)
       toast.error(errorMessage)
     }
   }

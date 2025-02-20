@@ -90,7 +90,7 @@ const CategoryList: React.FC = () => {
           setHeaders(filteredHeaders)
         }
       } catch (error: any) {
-        console.error('Failed to fetch categories:', error.message)
+        toast.error('Failed to fetch categories:', error.message)
       }
     }
     fetchCategories()
@@ -154,7 +154,7 @@ const CategoryList: React.FC = () => {
       } catch (error: any) {
         const errorMessage =
           error.response?.data?.message || error.message || 'Failed to update'
-        console.error('update category error:', errorMessage)
+        
         toast.error(errorMessage)
       }
     } else {
@@ -168,7 +168,7 @@ const CategoryList: React.FC = () => {
       } catch (error: any) {
         const errorMessage =
           error.response?.data?.message || error.message || 'Failed to add'
-        console.error('add category error:', errorMessage)
+       
         toast.error(errorMessage)
       }
     }
@@ -221,7 +221,7 @@ const CategoryList: React.FC = () => {
     } catch (error: any) {
       const errorMessage =
         error.response?.data?.message || error.message || 'Failed to delete'
-      console.error('delete category error:', errorMessage)
+    
       toast.error(errorMessage)
     }
     setOpenConfirm(false) // Close the dialog after confirmation

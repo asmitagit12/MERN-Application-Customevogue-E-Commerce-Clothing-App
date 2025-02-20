@@ -61,11 +61,9 @@ const SignIn: React.FC = () => {
       // Fetch the full user data based on userId (you'll need an API call for this)
       const userResponse = await getUserProfile(userId); // Assuming you have a function to fetch user details
       const user = userResponse.data; // Assuming userResponse has the full user details like name, email, etc.
-      console.log(user)
       // Dispatch the login action with the user details and token
       dispatch(loginAction({ others: user, token }));
       login(token)
-      console.log(decodedToken, token)
       if (userRole === 'admin') {
         navigate('/admin')
       } else {
@@ -74,7 +72,6 @@ const SignIn: React.FC = () => {
     } catch (error: any) {
       const errorMessage =
         error.response?.data?.message || error.message || 'Failed to login'
-      console.error('Login error:', errorMessage)
       toast.error(errorMessage)
     }
   }
