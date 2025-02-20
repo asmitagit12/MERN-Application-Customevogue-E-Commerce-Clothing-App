@@ -244,7 +244,7 @@ const ProductForm = () => {
         if (res?.data) {
           const productId = res.data._id
           const newImages = data.images || []
-          const existingImages = product.images || [] // Ensure existing images are considered
+          // const existingImages = product.images || [] // Ensure existing images are considered
 
           if (newImages.length > 0) {
             await uploadImages(newImages, productId)
