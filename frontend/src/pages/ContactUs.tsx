@@ -24,7 +24,7 @@ const ContactUs: React.FC = () => {
             <Grid
                 container
                 spacing={4}
-                alignItems="center"
+                alignItems="flex-start"
                 justifyContent={'center'}
                 sx={{
                     flexDirection: { xs: "column", md: "row",sm:'row',lg:'row' },

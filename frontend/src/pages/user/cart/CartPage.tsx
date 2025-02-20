@@ -41,8 +41,6 @@ const CartPage: React.FC = () => {
     )
   }
 
- 
-
   const handleOpen = () => {
     setOpenConfirm(true)
   }
@@ -66,7 +64,6 @@ const CartPage: React.FC = () => {
   const handleAddToWishlist = (product: any) => {
     // Check if the product is already in the wishlist
     const existingItem = wishlistItems?.find((item: any) => item._id === product._id);
-
     if (existingItem) {
       // If it's in the wishlist, remove it
       dispatch(removeWishlistItem({ id: product._id }));
@@ -254,6 +251,7 @@ const CartPage: React.FC = () => {
                                   Quantity
                                 </Typography>
                                 <IconButton
+                                disabled={item.quantity === 1}
                                   sx={{ color: 'gray', border: '1px solid #f0f0f0', borderRadius: 1 }}
                                   onClick={() => dispatch(decrementQuantity({ id: item.id }))}
                                 >
