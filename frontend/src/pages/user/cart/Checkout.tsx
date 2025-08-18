@@ -22,6 +22,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../../redux/store";
 import { getUserAddresses } from "../../../services/user/addressService";
 import { useNavigate } from "react-router-dom";
+import { placeOrder } from "../../../services/user/orderService";
 
 type Address = {
   _id: string;
@@ -42,17 +43,17 @@ const Checkout: React.FC = () => {
   const cartItems = useSelector((state: RootState) => state.cart.products)
   const userID = user?._id as string
   const [addresses, setAddresses] = useState<Address[]>([]);
- 
+
 
   const [currentStep, setCurrentStep] = useState(1);
   const [selectedPayment, setSelectedPayment] = useState<string>("");
 
-  useEffect(()=>{
-    if(!isAuthenticated){
+  useEffect(() => {
+    if (!isAuthenticated) {
       navigate('/auth/signin')
     }
 
-  },[isAuthenticated])
+  }, [isAuthenticated])
 
   // Fetch user addresses
   useEffect(() => {
@@ -72,15 +73,40 @@ const Checkout: React.FC = () => {
   }, [userID])
   const [selectedAddress, setSelectedAddress] = useState(addresses[0]?._id || "");
 
-   // Price Calculation
-   const totalPrice = cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
-   const deliveryCharges = totalPrice > 1000 ? 0 : 50;
-   const platformFee = 10;
-   const savings = totalPrice > 1000 ? 100 : 50;
-   const totalPayable = totalPrice + deliveryCharges + platformFee - savings;
+  // Price Calculation
+  const totalPrice = cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
+  const deliveryCharges = totalPrice > 1000 ? 0 : 50;
+  const platformFee = 10;
+  const savings = totalPrice > 1000 ? 100 : 50;
+  const totalPayable = totalPrice + deliveryCharges + platformFee - savings;
+
+  const handlePlaceOrder = async () => {
+    try {
+      const orderPayload = {
+        userId: userID,
+        items: cartItems?.map((item) => ({
+          productId: item.id,
+          quantity: item.quantity,
+          price: item.price,
+        })),
+        totalAmount: totalPayable,
+        paymentMethod: selectedPayment,
+      };
+
+      const response = await placeOrder(orderPayload);
+      console.log('place order response >>>>', response)
+
+      alert("Order placed successfully!");
+      navigate("/orders");
+    } catch (err) {
+      console.error("Order placement failed", err);
+      alert("Failed to place order. Please try again.");
+    }
+  }
+
   return (
-    <Box display="flex" flexWrap={'wrap'} justifyContent="center" rowGap={2} flexDirection={{xs:'column',md:'row'}} height={'auto'} p={3}>
-      <Box  width={{ xs: "100%", md: "60%" }}  mr={3}>
+    <Box display="flex" flexWrap={'wrap'} justifyContent="center" rowGap={2} flexDirection={{ xs: 'column', md: 'row' }} height={'auto'} p={3}>
+      <Box width={{ xs: "100%", md: "60%" }} mr={3}>
         <Accordion
           expanded={currentStep === 1}
           onChange={() => setCurrentStep(1)}
@@ -101,7 +127,18 @@ const Checkout: React.FC = () => {
                   variant="contained"
                   color="warning"
                   fullWidth
-                  sx={{ mt: 3, px: 4, py: 1.5, height: 35 }}
+                  sx={{
+                    mt: 3, px: 4, py: 1.5, height: 35,
+                    width: '100%',
+                    background: 'linear-gradient(to right, #00c6fb, #005bea)',
+                    boxShadow: '0px 6px 14px rgba(0, 0, 0, 0.3)',
+                    color: 'white',
+                    fontWeight: 'bold',
+                    textTransform: 'none',
+                    '&:hover': {
+                      background: 'linear-gradient(to right, #00c6fb, #005bea)',
+                    },
+                  }}
                   onClick={() => setCurrentStep(2)}
                 >
                   CONTINUE CHECKOUT
@@ -110,7 +147,7 @@ const Checkout: React.FC = () => {
             ) : (
               <Stack direction={'row'} spacing={1} alignItems={'center'}>
                 <Typography color="error">Please log in to proceed.</Typography>
-                <Button color="primary" sx={{ fontSize: 13 }} onClick={()=>{navigate('/auth/signin')}}>Sign In for continue checkout</Button>
+                <Button color="primary" sx={{ fontSize: 13 }} onClick={() => { navigate('/auth/signin') }}>Sign In for continue checkout</Button>
               </Stack>
             )}
           </AccordionDetails>
@@ -148,7 +185,18 @@ const Checkout: React.FC = () => {
               variant="contained"
               color="warning"
               fullWidth
-              sx={{ mt: 3, px: 4, py: 1.5, height: 35 }}
+              sx={{
+                mt: 3, px: 4, py: 1.5, height: 35,
+                width: '100%',
+                background: 'linear-gradient(to right, #00c6fb, #005bea)',
+                boxShadow: '0px 6px 14px rgba(0, 0, 0, 0.3)',
+                color: 'white',
+                fontWeight: 'bold',
+                textTransform: 'none',
+                '&:hover': {
+                  background: 'linear-gradient(to right, #00c6fb, #005bea)',
+                },
+              }}
               onClick={() => selectedAddress && setCurrentStep(3)}
               disabled={!selectedAddress} // Prevents clicking if no address selected
             >
@@ -158,8 +206,8 @@ const Checkout: React.FC = () => {
         </Accordion>
 
         {/* Order Summary */}
-         {/* Order Summary */}
-         <Accordion expanded={isAuthenticated && currentStep === 3} sx={{ mb: 2 }}>
+        {/* Order Summary */}
+        <Accordion expanded={isAuthenticated && currentStep === 3} sx={{ mb: 2 }}>
           <AccordionSummary expandIcon={<ExpandMoreIcon />}>
             <Typography sx={{ fontSize: 17, color: "#36454F", fontWeight: 550 }}>
               3 ORDER SUMMARY{currentStep > 3 && <CheckCircleIcon color="success" fontSize="small" />}
@@ -193,7 +241,18 @@ const Checkout: React.FC = () => {
               variant="contained"
               color="warning"
               fullWidth
-              sx={{ mt: 3, px: 4, py: 1.5, height: 35 }}
+              sx={{
+                mt: 3, px: 4, py: 1.5, height: 35,
+                width: '100%',
+                background: 'linear-gradient(to right, #00c6fb, #005bea)',
+                boxShadow: '0px 6px 14px rgba(0, 0, 0, 0.3)',
+                color: 'white',
+                fontWeight: 'bold',
+                textTransform: 'none',
+                '&:hover': {
+                  background: 'linear-gradient(to right, #00c6fb, #005bea)',
+                },
+              }}
               onClick={() => setCurrentStep(4)}
             >
               CONTINUE
@@ -215,9 +274,9 @@ const Checkout: React.FC = () => {
           <AccordionDetails>
             <FormControl component="fieldset">
               <RadioGroup value={selectedPayment} onChange={(e) => setSelectedPayment(e.target.value)}>
-                <FormControlLabel value="stripe" control={<Radio />} label="Credit/Debit Card (Stripe)" />
-                <FormControlLabel value="razorpay" control={<Radio />} label="UPI / Net Banking (Razorpay)" />
-                <FormControlLabel value="cod" control={<Radio />} label="Cash on Delivery" />
+                <FormControlLabel disabled value="STRIPE" control={<Radio />} label="Credit/Debit Card (Stripe)" />
+                <FormControlLabel disabled value="RAZORPAY" control={<Radio />} label="UPI / Net Banking (Razorpay)" />
+                <FormControlLabel value="COD" control={<Radio />} label="Cash on Delivery (Only COD available)" />
               </RadioGroup>
             </FormControl>
             <Button
@@ -229,17 +288,17 @@ const Checkout: React.FC = () => {
                 px: 4,
                 py: 1.5,
                 height: 35,
-                background: 'linear-gradient(to right, #00c6fb, #005bea)', // Linear gradient
+                background: 'linear-gradient(to right, #00c6fb, #005bea)',
                 color: 'white',
                 fontWeight: 'bold',
-                textTransform: 'none', // Prevents uppercase text
+                textTransform: 'none',
                 boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.2)',
                 '&:hover': {
-                  background: 'linear-gradient(to right, #00c6fb, #005bea)', // Hover effect gradient
+                  background: 'linear-gradient(to right, #00c6fb, #005bea)',
                   boxShadow: '0px 6px 14px rgba(0, 0, 0, 0.3)'
                 }
               }}
-              onClick={() => alert(`Selected Payment Mode: ${selectedPayment}`)}
+              onClick={handlePlaceOrder}
               disabled={!selectedPayment || !isAuthenticated}
             >
               Place Order
@@ -251,8 +310,8 @@ const Checkout: React.FC = () => {
 
       </Box>
 
-     {/* Right Section - Price Details */}
-     <Box width={{ xs: "100%", md: "30%" }}>
+      {/* Right Section - Price Details */}
+      <Box width={{ xs: "100%", md: "30%" }}>
         <Card variant="outlined">
           <CardContent>
             <Typography variant="h6" fontWeight="bold">

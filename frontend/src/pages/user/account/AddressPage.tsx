@@ -65,7 +65,7 @@ const AddressPage: React.FC = () => {
       try {
         const response = await getUserAddresses(userID)
         setAddresses(response.data)
-      } catch (error:any) {
+      } catch (error: any) {
       } finally {
         setLoading(false)
       }
@@ -134,31 +134,42 @@ const AddressPage: React.FC = () => {
 
   return (
     <Box sx={{ p: 2, backgroundColor: '#f5f5f5' }}>
-      <Stack direction={{md:'row',xs:'column'}} sx={{display:'flex',justifyContent:'space-between'}}>
+      <Stack direction={{ md: 'row', xs: 'column' }} sx={{ display: 'flex', justifyContent: 'space-between' }}>
 
-      {/* Title */}
-      <Typography sx={{fontSize:21}} gutterBottom>
-        Manage Addresses
-      </Typography>
+        {/* Title */}
+        <Typography sx={{ fontSize: 21 }} gutterBottom>
+          Manage Addresses
+        </Typography>
 
-      {/* Add New Address Button */}
-      {!showForm && (
-        <Button
-          variant='outlined'
-          size='small'
-          sx={{height:30}}
-          startIcon={<span style={{ fontSize: 18 }}>+</span>}
-          onClick={() => setShowForm(true)}
-        >
-          ADD A NEW ADDRESS
-        </Button>
-      )}
+        {/* Add New Address Button */}
+        {!showForm && (
+          <Button
+            variant='outlined'
+            size='small'
+            sx={{
+              height:30,
+              width: '100%',
+              background: 'linear-gradient(to right, #00c6fb, #005bea)',
+              boxShadow: '0px 6px 14px rgba(0, 0, 0, 0.3)',
+              color: 'white',
+              fontWeight: 'bold',
+              textTransform: 'none',
+              '&:hover': {
+                background: 'linear-gradient(to right, #00c6fb, #005bea)',
+              },
+            }}
+            startIcon={<span style={{ fontSize: 18 }}>+</span>}
+            onClick={() => setShowForm(true)}
+          >
+            ADD A NEW ADDRESS
+          </Button>
+        )}
       </Stack>
 
       {/* Form Section */}
       {showForm && (
         <Paper sx={{ p: 3, mt: 2 }}>
-          <Typography sx={{fontSize:21,pb:1}} >
+          <Typography sx={{ fontSize: 21, pb: 1 }} >
             Add a New Address
           </Typography>
 
@@ -315,7 +326,7 @@ const AddressPage: React.FC = () => {
             <Typography variant="body2" sx={{ backgroundColor: '#f5f5f5', width: 50, textAlign: 'center' }}>
               {address.addressType}
             </Typography>
-            <Typography variant="body1" sx={{ fontWeight: 550,pt:1,pb:0.5 }}>
+            <Typography variant="body1" sx={{ fontWeight: 550, pt: 1, pb: 0.5 }}>
               {address.name}
             </Typography>
             <Typography variant="body1">

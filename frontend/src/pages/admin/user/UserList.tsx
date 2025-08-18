@@ -15,13 +15,17 @@ import {
   DialogContent,
 
   Divider,
-  Tooltip
+  Tooltip,
+  Collapse
 } from '@mui/material'
 import VisibilityIcon from '@mui/icons-material/Visibility'
 import { useEffect, useState } from 'react'
 import { getAllUsers } from '../../../services/admin/userServices'
 import BreadcrumbsComponent from '../../../components/controls/BreadcrumbsComponent'
 import CloseIcon from '@mui/icons-material/Close'
+import React from 'react'
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 
 const UserList: React.FC = () => {
   const [users, setUsers] = useState<any[]>([]) // State to store user data
@@ -30,6 +34,7 @@ const UserList: React.FC = () => {
   const [rowsPerPage, setRowsPerPage] = useState(10) // Rows per page
   const [open, setOpen] = useState(false) // State to manage dialog box
   const [selectedUser, setSelectedUser] = useState<any>(null) // State to store selected user
+  const [openRow, setOpenRow] = useState<{ [key: string]: boolean }>({});
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -38,7 +43,7 @@ const UserList: React.FC = () => {
         const userData = response?.data
 
         if (userData && userData.length > 0) {
-          const excludedFields = ['_id', '__v', 'password', 'role']
+          const excludedFields = ['_id', '__v', 'password', 'role', 'addresses']
           const filteredHeaders = Object.keys(userData[0]).filter(
             key => !excludedFields.includes(key)
           )
@@ -87,6 +92,10 @@ const UserList: React.FC = () => {
     setSelectedUser(null)
   }
 
+  const handleToggleRow = (userId: string) => {
+    setOpenRow(prev => ({ ...prev, [userId]: !prev[userId] }));
+  };
+
   // Paginated users
   const paginatedUsers = users.slice(
     page * rowsPerPage,
@@ -109,21 +118,15 @@ const UserList: React.FC = () => {
         >
           <Box sx={{ overflow: 'auto' }}>
             <Table stickyHeader>
-              {/* Table Header */}
               <TableHead>
                 <TableRow>
-                  <TableCell
-                    sx={{ bgcolor: '#E5E4E2', p: 0, pl: 2, fontWeight: 550 }}
-                  >
-                    Sr.
-                  </TableCell>
+                  <TableCell sx={{ bgcolor: '#E5E4E2', fontWeight: 550 }} />
+                  <TableCell sx={{ bgcolor: '#E5E4E2', fontWeight: 550 }}>Sr.</TableCell>
                   {headers.map(header => (
                     <TableCell
                       key={header}
                       sx={{
                         bgcolor: '#E5E4E2',
-                        p: 1,
-                        m: 0,
                         textTransform: 'capitalize',
                         fontWeight: 550
                       }}
@@ -131,43 +134,95 @@ const UserList: React.FC = () => {
                       {header}
                     </TableCell>
                   ))}
-                  <TableCell sx={{ bgcolor: '#E5E4E2', p: 1, fontWeight: 550 }}>
-                    Actions
-                  </TableCell>
+                  <TableCell sx={{ bgcolor: '#E5E4E2', fontWeight: 550 }}>Actions</TableCell>
                 </TableRow>
               </TableHead>
-              {/* Table Body */}
+
               <TableBody>
                 {paginatedUsers.map((user, index) => (
-                  <TableRow key={index}>
-                    <TableCell sx={{ p: 0, pl: 2 }}>{index + 1}</TableCell>
-                    {headers.map(header => (
-                      <TableCell
-                        sx={{ p: 0.9, pl: 1 }}
-                        key={`${index}-${header}`}
-                      >
-                        {user[header]}
+                  <React.Fragment key={user._id}>
+                    {/* Main Row */}
+                    <TableRow hover>
+                      {/* Expand Icon Cell */}
+                      <TableCell sx={{ p: 0 }}>
+                        <IconButton onClick={() => handleToggleRow(user._id)} size="small">
+                          {openRow[user._id] ? (
+                            <KeyboardArrowUpIcon />
+                          ) : (
+                            <KeyboardArrowDownIcon />
+                          )}
+                        </IconButton>
                       </TableCell>
-                    ))}
-                    <TableCell sx={{ p: 0 }}>
-                      <IconButton
-                        onClick={() => handleOpenDialog(user)}
-                        sx={{ color: '#818589' }}
-                      >
-                        <Tooltip title={'View'}>
-                          <VisibilityIcon sx={{ fontSize: 20 }} />
+
+                      {/* Sr. No */}
+                      <TableCell>{index + 1 + page * rowsPerPage}</TableCell>
+
+                      {/* User Fields */}
+                      {headers.map(header => (
+                        <TableCell key={`${index}-${header}`}>{user[header]}</TableCell>
+                      ))}
+
+                      {/* Actions */}
+                      <TableCell>
+                        <Tooltip title="View Details">
+                          <IconButton onClick={() => handleOpenDialog(user)} size="small">
+                            <VisibilityIcon />
+                          </IconButton>
                         </Tooltip>
-                      </IconButton>
-                    </TableCell>
-                  </TableRow>
+                      </TableCell>
+                    </TableRow>
+
+                    {/* Expandable Address Row */}
+                    <TableRow>
+                      <TableCell colSpan={headers.length + 3} sx={{ p: 0 }}>
+                        <Collapse in={openRow[user._id]} timeout="auto" unmountOnExit>
+                          <Box sx={{ margin: 2 }}>
+                            {user.addresses && user.addresses.length > 0 ? (
+                              <Table size="small" aria-label="user-addresses">
+                                <TableHead>
+                                  <TableRow>
+                                    <TableCell>Name</TableCell>
+                                    <TableCell>Street</TableCell>
+                                    <TableCell>City</TableCell>
+                                    <TableCell>State</TableCell>
+                                    <TableCell>Pin</TableCell>
+                                    <TableCell>Country</TableCell>
+                                    <TableCell>Type</TableCell>
+                                  </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                  {user.addresses.map((address: any, addrIndex: number) => (
+                                    <TableRow key={addrIndex}>
+                                      <TableCell>{address.name}</TableCell>
+                                      <TableCell>{address.streetAddress}</TableCell>
+                                      <TableCell>{address.city}</TableCell>
+                                      <TableCell>{address.state}</TableCell>
+                                      <TableCell>{address.pinCode}</TableCell>
+                                      <TableCell>{address.country}</TableCell>
+                                      <TableCell>{address.addressType}</TableCell>
+                                    </TableRow>
+                                  ))}
+                                </TableBody>
+                              </Table>
+                            ) : (
+                              <Box sx={{ p: 2, fontStyle: 'italic', color: 'gray' }}>
+                                No addresses available.
+                              </Box>
+                            )}
+                          </Box>
+                        </Collapse>
+                      </TableCell>
+                    </TableRow>
+                  </React.Fragment>
                 ))}
               </TableBody>
             </Table>
           </Box>
+
           {/* Table Pagination */}
           <TablePagination
             rowsPerPageOptions={[5, 10, 25]}
-            component='div'
+            component="div"
             count={users.length}
             rowsPerPage={rowsPerPage}
             page={page}
@@ -188,6 +243,7 @@ const UserList: React.FC = () => {
           />
         </TableContainer>
       </Grid>
+
 
       {/* Dialog to show user details */}
       <Dialog open={open} onClose={handleCloseDialog} fullWidth maxWidth='sm'>

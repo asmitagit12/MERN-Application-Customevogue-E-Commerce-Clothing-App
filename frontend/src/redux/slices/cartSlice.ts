@@ -2,7 +2,6 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 // Define the Product type
 interface Product {
-
   size: string
   description: string;
   productId: any;

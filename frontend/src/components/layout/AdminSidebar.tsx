@@ -7,7 +7,7 @@ import {
   ListItemIcon,
   ListItemText,
   Collapse,
- 
+
   Typography,
 
   useMediaQuery,
@@ -17,7 +17,7 @@ import {
 import { Home, Settings } from '@mui/icons-material' // Home and Settings icons
 import ExpandLess from '@mui/icons-material/ExpandLess' // Icon for collapsing submenus
 import ExpandMore from '@mui/icons-material/ExpandMore' // Icon for expanding submenus
-import { Inventory2,  Person } from '@mui/icons-material'
+import { Inventory2, Person } from '@mui/icons-material'
 import logo from '../../assets/logo.svg'
 
 interface IMenuItem {
@@ -62,7 +62,6 @@ const AdminSidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
         }
       ]
     },
-
     {
       name: 'Users',
       label: 'Manage Users',
@@ -73,6 +72,19 @@ const AdminSidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
           name: 'User List',
           label: 'User List',
           href: '/admin/users'
+        }
+      ]
+    },
+    {
+      name: 'Orders',
+      label: 'Manage Orders',
+      href: '/admin/orders',
+      icon: <Person sx={{ fontSize: 20, p: 0, m: 0 }} />,
+      submenu: [
+        {
+          name: 'Order List',
+          label: 'Order List',
+          href: '/admin/orders'
         }
       ]
     },

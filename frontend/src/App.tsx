@@ -39,6 +39,7 @@ import UserCollection from './pages/user/collection/UserCollection'
 import ContactUs from './pages/ContactUs'
 import AboutUs from './pages/AboutUs'
 import Checkout from './pages/user/cart/Checkout'
+import AdminOrderList from './pages/admin/orders/AdminOrderList'
 
 
 function App() {
@@ -131,6 +132,7 @@ function App() {
         >
           <Route index element={<AdminDashboard />} />
           <Route path='users' element={<UserList />} />
+          <Route path='orders' element={<AdminOrderList />} />
           <Route path='category' element={<CategoryList />} />
           <Route
             path='sub-category/:categoryId'

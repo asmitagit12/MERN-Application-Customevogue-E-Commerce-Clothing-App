@@ -4,13 +4,14 @@ import Order, { IOrder } from "../models/Order";
 // Create a new order
 export const createOrder = async (req: Request, res: Response) => {
     try {
-        const { userId, items, totalAmount } = req.body;
+        const { userId, items, totalAmount, paymentMethod } = req.body;
 
         const order = new Order({
             userId,
             items,
             totalAmount,
             status: "PENDING",
+            paymentMethod,
         });
 
         await order.save();
@@ -74,5 +75,20 @@ export const deleteOrder = async (req: Request, res: Response): Promise<void> =>
         res.status(200).json({ message: "Order deleted successfully" });
     } catch (error) {
         res.status(500).json({ error: "Failed to delete order" });
+    }
+};
+
+// Get all orders for a specific user
+export const getOrdersByUserId = async (req: Request, res: Response): Promise<void> => {
+    try {
+        const { userId } = req.params;
+
+        const orders = await Order.find({ userId })
+            .populate("userId")
+            .populate("items.productId");
+
+        res.status(200).json(orders);
+    } catch (error) {
+        res.status(500).json({ error: "Failed to fetch user's orders" });
     }
 };

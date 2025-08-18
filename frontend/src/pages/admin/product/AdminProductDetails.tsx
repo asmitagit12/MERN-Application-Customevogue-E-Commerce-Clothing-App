@@ -91,7 +91,7 @@ const AdminProductDetails = () => {
                     onClick={() => setSelectedImage(image)}
                   >
                     <img
-                      src={`${baseUrl}/uploads/${image}`}
+                      src={`${baseUrl}api/uploads/${image}`}
                       alt={`Thumbnail ${index + 1}`}
                       style={{ width: '100%', height: 'auto' }}
                     />
@@ -104,7 +104,7 @@ const AdminProductDetails = () => {
             <Grid item xs={12} lg={10} md={10} sm={12}>
               <Box
                 component='img'
-                src={`${baseUrl}/uploads/${selectedImage}`}
+                src={`${baseUrl}api/uploads/${selectedImage}`}
                 alt='Selected Product'
                 sx={{
                   width: '100%',

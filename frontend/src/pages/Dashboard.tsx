@@ -15,7 +15,16 @@ import {
 } from '@mui/material'
 
 import RoundedCarousel from '../components/controls/RoundedCarousel'
+import delivery from '../assets/policy/delivery.svg'
+import refund from '../assets/policy/refund.svg'
+import support from '../assets/policy/support.svg'
+import summer from '../assets/home-trendings/summer.jpg'
+import ArrivalsSection from '../components/controls/ArrivalsSection'
+import {useNavigate } from 'react-router-dom'
 
+import newLaunches from '../assets/banner/new-launch-banner.jpg'
+import flashSaleBanner from '../assets/banner/flash-sale-banner.jpg'
+import pkBanner from '../assets/banner/pk-banner.jpg'
 
 type ImageLabel = {
   image: string
@@ -37,7 +46,7 @@ const Dashboard: React.FC = () => {
   const [isDragging, setIsDragging] = useState(false)
   const [startX, setStartX] = useState(0)
   const [scrollLeft, setScrollLeft] = useState(0)
-
+  const navigate = useNavigate()
   const handleMouseDown = (e: React.MouseEvent) => {
     setIsDragging(true)
     if (scrollRef.current) {
@@ -62,10 +71,10 @@ const Dashboard: React.FC = () => {
   }
   
   const images: string[] = [
-    'https://img.theloom.in/pwa/loom/banners/26nov-2024-New-Launches-Desktop-Banner.jpg?tr=h-624%2Cw-1600',
-    'https://img.theloom.in/pwa/loom/banners/29nov-2024-Flash-Sale-2024-3840-1500-Main-Desktop-Banner.jpg?tr=h-624%2Cw-1600',
+    newLaunches,
+    flashSaleBanner,
     // 'https://img.theloom.in/pwa/loom/banners/5Nov2024-LoomExclusive-Desktop_MainBanner.png?tr=h-624%2Cw-1600',
-    'https://img.theloom.in/pwa/loom/banners/PriyaChaudhary_PC34_websitebanner.jpg?tr=h-624%2Cw-1600'
+    pkBanner
   ]
 
   const items: ImageLabel[] = [
@@ -101,8 +110,6 @@ const Dashboard: React.FC = () => {
     }
   ]
 
- 
-
   const cardData: CardData[] = [
     {
       title: 'Light Layers',
@@ -129,8 +136,6 @@ const Dashboard: React.FC = () => {
         'https://s7ap1.scene7.com/is/image/adityabirlafashion/20241128_Overlay_MFL_App' // Replace with the actual image URL or path
     }
   ]
-
- 
 
   const ImageCategories: ImageLabel[] = [
     {
@@ -231,6 +236,7 @@ const Dashboard: React.FC = () => {
                 boxShadow: 3,
                 textAlign: 'center'
               }}
+              onClick={()=>{navigate('/collection')}}
             >
               <CardMedia
                 component='img'
@@ -251,6 +257,7 @@ const Dashboard: React.FC = () => {
           <RoundedCarousel items={items} />
         </Box>
       </Grid>
+
       {/* stunning picks */}
       <Grid
         item
@@ -281,169 +288,9 @@ const Dashboard: React.FC = () => {
             </Stack>
           </Grid>
 
-          {/* New Arrivals */}
-          <Grid
-            item
-            lg={3}
-            sm={4}
-            sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'center',
-              alignItems: 'center'
-            }}
-          >
-            <Box
-              sx={{
-                width: '90%',
-                height: 'auto',
-                transition: 'transform 0.3s ease', // Smooth transition for zoom effect
-                '&:hover img': {
-                  transform: 'scale(1.05)' // Zoom effect on hover
-                }
-              }}
-            >
-              <img
-                src='https://img.theloom.in/pwa/loom/banners/New-Arrivals-24nov-2024.jpg'
-                alt='New Arrivals'
-                style={{ width: '100%', height: 'auto' }}
-              />
-            </Box>
-            <Typography
-              sx={{
-                textAlign: 'center',
-                marginTop: '8px',
-                fontSize: 18,
-                fontWeight: 500
-              }}
-            >
-              New Arrivals
-            </Typography>
-          </Grid>
-
-          {/* Winter Arrivals */}
-          <Grid
-            item
-            lg={3}
-            sm={4}
-            sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'center',
-              alignItems: 'center'
-            }}
-          >
-            <Box
-              sx={{
-                width: '90%',
-                height: 'auto',
-                transition: 'transform 0.3s ease', // Smooth transition for zoom effect
-                '&:hover img': {
-                  transform: 'scale(1.05)' // Zoom effect on hover
-                }
-              }}
-            >
-              <img
-                src='https://img.theloom.in/pwa/loom/banners/26nov-2024-Winter.jpg'
-                alt='Winter Arrivals'
-                style={{ width: '100%', height: 'auto' }}
-              />
-            </Box>
-            <Typography
-              sx={{
-                textAlign: 'center',
-                marginTop: '8px',
-                fontSize: 18,
-                fontWeight: 500
-              }}
-            >
-              Winter Arrivals
-            </Typography>
-          </Grid>
-
-          {/* Velvet Arrivals */}
-          <Grid
-            item
-            lg={3}
-            sm={4}
-            sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'center',
-              alignItems: 'center'
-            }}
-          >
-            <Box
-              sx={{
-                width: '90%',
-                height: 'auto',
-                transition: 'transform 0.3s ease', // Smooth transition for zoom effect
-                '&:hover img': {
-                  transform: 'scale(1.05)' // Zoom effect on hover
-                }
-              }}
-            >
-              <img
-                src='https://img.theloom.in/pwa/loom/banners/13nov-2024-Velvet.jpg'
-                alt='Velvet Arrivals'
-                style={{ width: '100%', height: 'auto' }}
-              />
-            </Box>
-            <Typography
-              sx={{
-                textAlign: 'center',
-                marginTop: '8px',
-                fontSize: 18,
-                fontWeight: 500
-              }}
-            >
-              Velvet Arrivals
-            </Typography>
-          </Grid>
-
-          {/* The Guest List Edit */}
-          <Grid
-            item
-            lg={3}
-            sm={4}
-            sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'center',
-              alignItems: 'center'
-            }}
-          >
-            <Box
-              sx={{
-                width: '90%',
-                height: 'auto',
-                transition: 'transform 0.3s ease', // Smooth transition for zoom effect
-                '&:hover img': {
-                  transform: 'scale(1.05)' // Zoom effect on hover
-                }
-              }}
-            >
-              <img
-                src='https://img.theloom.in/pwa/loom/banners/27nov-2024-The-guest-list-edit.jpg'
-                alt='The Guest List Edit'
-                style={{ width: '100%', height: 'auto' }}
-              />
-            </Box>
-            <Typography
-              sx={{
-                textAlign: 'center',
-                marginTop: '8px',
-                fontSize: 18,
-                fontWeight: 500
-              }}
-            >
-              The Guest List Edit
-            </Typography>
-          </Grid>
+       <ArrivalsSection/>
         </Grid>
       </Grid>
-
-      
 
       {/* four image square boxes */}
       <Grid item lg={10} sm={11} md={11} xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
@@ -498,13 +345,13 @@ const Dashboard: React.FC = () => {
                   <Typography variant='body2' color='text.secondary'>
                     {card.description}
                   </Typography>
-                  <Typography
-                    component={'a'}
-                    href='/'
-                    sx={{ p: 0, height: 30 }}
+                  <Button
+                   variant='text'
+                    onClick={()=>navigate('/collection')}
+                    sx={{ p: 0, height: 30,border:'none',textTransform:'capitalize' }}
                   >
                     Shop Now
-                  </Typography>
+                  </Button>
                 </Box>
 
                 {/* Clickable Action */}
@@ -523,225 +370,6 @@ const Dashboard: React.FC = () => {
           ))}
         </Grid>
       </Grid>
-
-      {/* style finder */}
-      {/* <Grid item lg={10} xs={11} sm={11} md={12} sx={{ display: 'flex', justifyContent: 'center',alignItems:'center' }}>
-        <Grid
-          container
-          // spacing={2}
-          sx={{ padding: 4, display: 'flex', justifyContent: 'center' }}
-        >
-          <Paper
-            elevation={5}
-            sx={{
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-              gap: 3,
-              flexDirection: 'column',
-              width: '100%',
-              pl: 4,
-              pb: 4,
-              pr: 4
-            }}
-          >
-            <Grid
-              item
-              lg={5}
-              md={5}
-              xs={12}
-              sx={{
-                // backgroundColor: 'gray', // Blue-green background color
-                // borderRadius: '0px 0px 60px 60px', // Half-round bottom corners
-                pb: 2,
-                pt: 1,
-                pl: 2,
-                pr: 2,
-                gap: 1,
-                color: 'black',
-                // borderTop: 'none', // Remove top border
-                // borderLeft: '20px solid #E5E4E2', // Light left border
-                // borderRight: '20px solid #E5E4E2', // Light right border
-                // borderBottom: '20px solid #E5E4E2', // Light bottom border
-                // boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)' // Subtle shadow for depth
-              }}
-            >
-              <Typography
-                variant='h4'
-                align='center'
-                sx={{
-                  fontFamily: '"Playfair Display", serif',
-                  fontSize: 27,
-                  pb: 1,pt:2
-                }}
-              >
-                Style Finder
-              </Typography>
-              <Typography
-                sx={{ fontSize: 14, whiteSpace: 'wrap' }}
-                align='center'
-              >
-                Looking for something specific? Let's get you there
-              </Typography>
-            </Grid>
-
-            <Grid
-              item
-              xs={12}
-              lg={12}
-              container
-              justifyContent='center'
-              spacing={2}
-            >
-              {Object.keys(categories).map(category => (
-                <Grid item key={category}>
-                  <Button
-                    variant={
-                      selectedCategory === category ? 'contained' : 'outlined'
-                    }
-                    onClick={() => handleCategoryClick(category as CategoryKey)}
-                    sx={{
-                      textTransform: 'none',
-                      width: 90,
-                      color: selectedCategory === category ? 'white' : 'black',
-                      bgcolor:
-                        selectedCategory === category ? 'teal' : 'inherit',
-                      ':hover': {
-                        bgcolor:
-                          selectedCategory === category ? 'teal' : 'inherit'
-                      }
-                    }}
-                  >
-                    {category}
-                  </Button>
-                </Grid>
-              ))}
-            </Grid>
-
-            <Grid
-              container
-              spacing={2}
-              columnGap={9}
-              justifyContent='center'
-              alignItems='center'
-            >
-              {categories[selectedCategory]?.map((item, index) => (
-                <Grid
-                  item
-                  xs={2}
-                  sm={1}
-                  md={1}
-                  lg={1}
-                  key={index}
-                  sx={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    gap: 2,m:1
-                  }}
-                  onClick={() =>
-                    setSelectedCard({
-                      title: item.label,
-                      description: '',
-                      image: item.image
-                    })
-                  }
-                >
-                  <Card
-                    sx={{
-                      width: 130,
-                      border:
-                        selectedCard?.image === item.image
-                          ? '2px solid #3BD9EB'
-                          : 'none'
-                    }}
-                  >
-                    <Box
-                      sx={{
-                        position: 'relative',
-                        width: '100%',
-                        paddingTop: '100%', // 1:1 aspect ratio
-                        overflow: 'hidden'
-                      }}
-                    >
-                      <CardMedia
-                        component='img'
-                        image={item.image}
-                        alt={item.label}
-                        sx={{
-                          position: 'absolute',
-                          top: 0,
-                          left: 0,
-                          width: '100%',
-                          height: '100%',
-                          objectFit: 'cover'
-                        }}
-                      />
-                    </Box>
-                  </Card>
-                  <Typography
-                    variant='caption'
-                    align='center'
-                    sx={{
-                      textTransform: 'uppercase',
-                      whiteSpace: 'nowrap',
-                      marginTop: 1
-                    }}
-                  >
-                    {item.label}
-                  </Typography>
-                </Grid>
-              ))}
-            </Grid>
-
-            <Grid item xs={12} container justifyContent='center' spacing={2}>
-              {['Most Popular', 'Latest'].map(filter => (
-                <Grid item key={filter}>
-                  <Button
-                    variant='outlined'
-                    sx={{
-                      textTransform: 'none',
-                      width: 140,
-                      whiteSpace: 'nowrap',
-                      display: 'flex',
-                      justifyContent: 'center',
-                      alignItems: 'center'
-                    }}
-                  >
-                    {filter}
-                    <KeyboardArrowRightIcon sx={{ ml: 1 }} />
-                  </Button>
-                </Grid>
-              ))}
-            </Grid>
-          </Paper>
-        </Grid>
-      </Grid> */}
-
-      {/* shop the look section */}
-      {/* <Grid item lg={12} md={11} sm={12} xs={9} mb={3}>
-        <Typography
-          sx={{
-            textAlign: 'center',
-            fontFamily: 'Times New Roman, serif',
-            fontSize: 30
-          }}
-        >
-          Shop The Look
-        </Typography>
-
-        <Box
-          width={'100%'}
-          sx={{
-            display: 'flex',
-            justifyContent: 'center',
-            width: '100%',
-            height: '100%'
-          }}
-        >
-          <AnimatedCarousel images={animatedImages} />
-        </Box>
-      </Grid> */}
 
       {/* summer breeze first square */}
       <Grid
@@ -810,7 +438,7 @@ const Dashboard: React.FC = () => {
             }}
           >
             <img
-              src='https://media.istockphoto.com/id/807428516/photo/beautiful-women-in-shopping.jpg?s=612x612&w=0&k=20&c=kE46kKimqPwF1kjoNzioNlOBdp9kDehYw2PqE0Takr8=' // Update with actual image path
+              src={summer}
               alt='Summer Breeze 2024'
               style={{ width: '90%', height: 'auto', borderRadius: 2 }}
             />
@@ -837,7 +465,7 @@ const Dashboard: React.FC = () => {
           >
             <Stack spacing={1} sx={{ display: 'flex', alignItems: 'center' }}>
               <img
-                src='https://cdn.shopify.com/s/files/1/0825/5533/9035/files/DELIVERY.svg?v=1714802624'
+                src={delivery}
                 alt='Payment & Delivery'
                 style={{ width: 100, height: 130 }}
               />
@@ -859,7 +487,7 @@ const Dashboard: React.FC = () => {
           >
             <Stack spacing={1} sx={{ display: 'flex', alignItems: 'center' }}>
               <img
-                src='https://cdn.shopify.com/s/files/1/0825/5533/9035/files/REFUND.svg?v=1714802624'
+                src={refund}
                 alt='Return & Refund'
                 style={{ width: 100, height: 130 }}
               />
@@ -883,7 +511,7 @@ const Dashboard: React.FC = () => {
           >
             <Stack spacing={1} sx={{ display: 'flex', alignItems: 'center' }}>
               <img
-                src='https://cdn.shopify.com/s/files/1/0825/5533/9035/files/support.svg?v=1714802624'
+                src={support}
                 alt='Quality Support'
                 style={{ width: 100, height: 120 }}
               />
