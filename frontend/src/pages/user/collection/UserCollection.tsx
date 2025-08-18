@@ -20,6 +20,7 @@ import {
     Slider,
     Chip,
     IconButton,
+    CircularProgress,
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -70,6 +71,7 @@ const UserCollection: React.FC = () => {
     const [categories] = useState<string[]>(["Men", "Women", "Kids"]);
     const [types] = useState<string[]>(["Topwear", "Bottomwear", "Winterwear"]);
     const [sortOption, setSortOption] = useState<string>("relevant");
+    const [loading, setLoading] = useState(false);
     const [filters, setFilters] = useState<Filters>({
         category: "",
         type: "",
@@ -98,6 +100,7 @@ const UserCollection: React.FC = () => {
     useEffect(() => {
         const fetchProducts = async () => {
             try {
+                setLoading(true);
                 const filters = {
                     category: '',
                     subCategory: '',
@@ -107,7 +110,7 @@ const UserCollection: React.FC = () => {
                     stock: false,
                     search: ''
                 };
-
+    
                 const response = await getAllProducts(filters);
                 const productData = response?.data;
                 if (productData && productData.length > 0) {
@@ -116,6 +119,8 @@ const UserCollection: React.FC = () => {
                 }
             } catch (error: any) {
                 console.error('Failed to fetch Products:', error.message);
+            } finally {
+                setLoading(false);
             }
         };
         fetchProducts();
@@ -174,6 +179,13 @@ const UserCollection: React.FC = () => {
         applyFilters();
     }, [filters, productList]);
 
+    if (loading) {
+        return (
+          <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
+            <CircularProgress />
+          </Box>
+        );
+    }
     return (
         <Grid container spacing={2} sx={{ width: '100%', pl: { lg: 4, md: 2, sm: 1, xs: 0 }, pr: { lg: 4, md: 1, sm: 1, xs: 0 }, pt: 3, pb: 3, display: 'flex', justifyContent: 'center' }}>
             <Grid item lg={2} md={3} sm={3} xs={12}>

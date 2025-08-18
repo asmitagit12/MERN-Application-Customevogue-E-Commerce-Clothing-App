@@ -9,16 +9,17 @@ enum OrderStatus {
 }
 
 export interface IOrder extends Document {
-  userId: mongoose.Schema.Types.ObjectId; // Reference to the User model
+  userId: mongoose.Schema.Types.ObjectId;
   items: Array<{
     productId: mongoose.Schema.Types.ObjectId;
     quantity: number;
     price: number;
-  }>; // Array of products in the order
-  totalAmount: number; // Total order value
-  status: OrderStatus; // Order status
-  createdAt: Date; // Timestamp when the order was created
-  updatedAt: Date; // Timestamp when the order was last updated
+  }>; 
+  totalAmount: number; 
+  status: OrderStatus; 
+  paymentMethod: string;
+  createdAt: Date; 
+  updatedAt: Date; 
 }
 
 const OrderSchema: Schema = new Schema(
@@ -37,6 +38,7 @@ const OrderSchema: Schema = new Schema(
       enum: Object.values(OrderStatus),
       default: OrderStatus.PENDING,
     },
+    paymentMethod: { type: String, required: true },
     createdAt: { type: Date, default: Date.now },
     updatedAt: { type: Date, default: Date.now },
   },

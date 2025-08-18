@@ -47,7 +47,7 @@ const baseUrl = import.meta.env.VITE_BASEURL
 const ProductList = () => {
   const [productList, setProductList] = useState<any[]>([])
   const [currentPage, setCurrentPage] = useState(1)
-  const [view, setView] = React.useState('list');
+  const [view, setView] = useState<'list' | 'module'>('list'); // or default value
   const itemsPerPage = view === 'list' ? 8 : 6
   const navigate = useNavigate()
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
@@ -78,11 +78,10 @@ const ProductList = () => {
     fetchProducts()
   }, [])
 
-  const handleChangePage = (
-    page: number
-  ) => {
-    setCurrentPage(page)
-  }
+  const handleChangePage = (page: number) => {
+    console.log(page);
+    setCurrentPage(page);
+  };
 
   const links = [{ label: 'Home', href: '/admin' }, { label: 'All Products' }]
   // Paginated Data
@@ -163,11 +162,12 @@ const ProductList = () => {
       >
         <BreadcrumbsComponent links={links} size={15} />
         <Stack direction={'row'} spacing={1} alignItems={'center'}>
+
           <Box display='flex' whiteSpace={'nowrap'} justifyContent='center' alignItems='center'>
             <Pagination
               count={Math.ceil(productList.length / itemsPerPage)}
               page={currentPage}
-              onChange={() => handleChangePage}
+              onChange={(_event, value) => handleChangePage(value)}
               color='primary'
               sx={{ whiteSpace: 'nowrap' }}
             />
@@ -181,7 +181,7 @@ const ProductList = () => {
               navigate('/admin/add-product')
             }}
           >
-            Add New Product
+            Add
           </Button>
           <ToggleButtonGroup
             orientation="horizontal"
@@ -189,10 +189,8 @@ const ProductList = () => {
             sx={{ height: 35 }}
             size="small"
             exclusive
-            onChange={(nextView: unknown) => {
-              if (typeof nextView === "string") setView(nextView);
-            }}
-            
+            onChange={(_event, nextView) => nextView && setView(nextView)}
+
           >
             <ToggleButton value="list" aria-label="list">
               <ViewListIcon />
@@ -201,11 +199,10 @@ const ProductList = () => {
               <ViewModuleIcon />
             </ToggleButton>
           </ToggleButtonGroup>
+
         </Stack>
       </Grid>
       <Divider variant='fullWidth' sx={{ m: 1, mb: 2 }} />
-
-      
       {/* Product View */}
       <Grid container spacing={3}>
         {view === 'list' ? (
@@ -241,7 +238,7 @@ const ProductList = () => {
                         <CardMedia
                           component="img"
                           style={{ width: 50, height: 50, borderRadius: '4px' }}
-                          image={`${baseUrl}/uploads/${product.images[0]}` || NoImage}
+                          image={`${baseUrl}api/uploads/${product.images[0]}` || NoImage}
                           alt={product.name}
                         />
                       </TableCell>
@@ -320,7 +317,7 @@ const ProductList = () => {
                     <CardMedia
                       component="img"
                       style={{ width: 80, height: 'auto' }}
-                      image={`${baseUrl}/uploads/${product.images[0]}` || NoImage}
+                      image={`${baseUrl}api/uploads/${product.images[0]}` || NoImage}
                       alt={product.name}
                     />
                     <Stack>

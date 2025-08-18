@@ -40,7 +40,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
     if (initialImages.length > 0) {
       const initialImageObjects = initialImages.map(imageSrc => ({
         name: imageSrc,
-        src: `${baseUrl}/uploads/${imageSrc}`,
+        src: `${baseUrl}api/uploads/${imageSrc}`,
         progress: 100,
         completed: true,
         file: null

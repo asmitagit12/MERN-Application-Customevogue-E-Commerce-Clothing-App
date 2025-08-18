@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   Box,
   Grid,
@@ -16,6 +16,9 @@ import SearchIcon from '@mui/icons-material/Search'
 import GradeIcon from '@mui/icons-material/Grade'
 import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord'
 import BreadcrumbsComponent from '../../../components/controls/BreadcrumbsComponent'
+import { getOrderByUserId } from '../../../services/user/orderService'
+import { useSelector } from 'react-redux'
+import { RootState } from '../../../redux/store'
 interface Order {
   id: number
   name: string
@@ -25,40 +28,57 @@ interface Order {
   status: string
   image: string
 }
-
-const ordersData: Order[] = [
-  {
-    id: 1,
-    name: 'MONISTRY Men Trendy, Casual Tan Artificial Wallet',
-    color: 'Tan',
-    price: 454,
-    deliveredDate: 'Dec 13, 2023',
-    status: 'Delivered',
-    image:
-      'https://www.octaveclothing.com/cdn/shop/files/0C8A6062.jpg?v=1727972628&width=120'
-  },
-  {
-    id: 2,
-    name: 'FEMEO excellent new superb combo pack 3 Watches',
-    color: 'Black',
-    price: 437,
-    deliveredDate: 'Jul 30, 2021',
-    status: 'Delivered',
-    image:
-      'https://www.octaveclothing.com/cdn/shop/files/0C8A6062.jpg?v=1727972628&width=120'
-  }
-]
+const baseUrl = import.meta.env.VITE_BASEURL
 
 const OrderList: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('')
-  const [filteredOrders, setFilteredOrders] = useState<Order[]>(ordersData)
+  const [filteredOrders, setFilteredOrders] = useState<Order[]>([])
+  const user = useSelector((state: RootState) => state.auth.user)
+  const userId = user?._id
+
+  useEffect(() => {
+    const fetchOrders = async () => {
+      try {
+        const response = await getOrderByUserId(userId || '');
+        const rawOrders = response;
+        console.log(response)
+        const transformedOrders: Order[] = rawOrders.flatMap((order: any) =>
+          order.items.map((item: any) => ({
+            id: item._id,
+            name: item.productId?.name || 'Product Name',
+            color: 'Default', // if you have a color field, map it here
+            price: item.price,
+            deliveredDate: new Date(order.createdAt).toLocaleDateString(),
+            status: order.status,
+            image: `${baseUrl}api/uploads/${item.productId.images[0]}`
+            // image: item.productId?.images?.[0]
+            //   ? `/uploads/${item.productId.images[0]}`
+            //   : 'https://via.placeholder.com/120' // fallback image
+          }))
+        );
+
+        setFilteredOrders(transformedOrders);
+      } catch (error: any) {
+        const errorMessage =
+          error.response?.data?.message ||
+          error.message ||
+          'Failed to fetch orders';
+        console.error(errorMessage);
+      }
+    };
+
+    fetchOrders();
+  }, [userId]);
+
 
   const handleSearch = () => {
-    const filtered = ordersData.filter(order =>
-      order.name.toLowerCase().includes(searchQuery.toLowerCase())
-    )
-    setFilteredOrders(filtered)
-  }
+    setFilteredOrders(prev =>
+      prev.filter(order =>
+        order.name.toLowerCase().includes(searchQuery.toLowerCase())
+      )
+    );
+  };
+
 
   const links = [
     { label: 'Home', href: '/' },
@@ -69,7 +89,7 @@ const OrderList: React.FC = () => {
   return (
     <Box sx={{ padding: '20px' }}>
       {/* Breadcrumb */}
-      <BreadcrumbsComponent links={links} size={12}/>
+      <BreadcrumbsComponent links={links} size={12} />
 
       <Grid container spacing={2}>
         {/* Filters Section */}
