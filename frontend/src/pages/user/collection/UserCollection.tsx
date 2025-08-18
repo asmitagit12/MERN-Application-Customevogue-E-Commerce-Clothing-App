@@ -179,7 +179,7 @@ const UserCollection: React.FC = () => {
         applyFilters();
     }, [filters, productList]);
 
-    if (productList.length === 0) {
+    if (loading) {
         return (
           <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
             <CircularProgress />

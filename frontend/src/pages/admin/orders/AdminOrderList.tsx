@@ -16,8 +16,7 @@ import {
     DialogContent,
     Divider,
     Tooltip,
-    Collapse,
-    Typography
+    Collapse
 } from '@mui/material'
 
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'

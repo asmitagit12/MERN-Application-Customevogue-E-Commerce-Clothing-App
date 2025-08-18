@@ -33,7 +33,6 @@ const baseUrl = import.meta.env.VITE_BASEURL
 const OrderList: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('')
   const [filteredOrders, setFilteredOrders] = useState<Order[]>([])
-  const [headers, setHeaders] = useState<string[]>([])
   const user = useSelector((state: RootState) => state.auth.user)
   const userId = user?._id
 
