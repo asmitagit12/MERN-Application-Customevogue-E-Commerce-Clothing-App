@@ -27,6 +27,7 @@ import razorpayLogo from '../../../assets/razorpay.png'
 import axios from "axios";
 import { createRazorpayOrder, verifyRazorpayPayment } from "../../../services/user/paymentService";
 import { emptyCart } from "../../../redux/slices/cartSlice";
+import toast from "react-hot-toast";
 
 type Address = {
   _id: string;
@@ -97,14 +98,13 @@ const Checkout: React.FC = () => {
         paymentMethod: selectedPayment,
       };
 
-      const response = await placeOrder(orderPayload);
-      alert("Order placed successfully!");
+      const response = await placeOrder(orderPayload).catch(() => null);
+      if (!response) return;
+      toast.success("Order placed successfully!");
       navigate("/orders");
       dispatch(emptyCart());
-
     } catch (err) {
-      console.error("Order placement failed", err);
-      alert("Failed to place order. Please try again.");
+      console.log("Failed to place order. Please try again.");
     }
   }
 
@@ -121,7 +121,7 @@ const Checkout: React.FC = () => {
   const handleRazorpayPayment = async () => {
     const loaded = await loadRazorpayScript();
     if (!loaded) {
-      alert("Razorpay SDK failed to load");
+      toast.error("Razorpay SDK failed to load");
       return;
     }
 
@@ -132,7 +132,7 @@ const Checkout: React.FC = () => {
       const currency = res?.currency;
 
       if (!order_id) {
-        alert("Invalid Razorpay order response");
+        toast.error("Invalid Razorpay order response");
         return;
       }
 
@@ -148,15 +148,15 @@ const Checkout: React.FC = () => {
             razorpay_payment_id: paymentResult.razorpay_payment_id,
             razorpay_order_id: paymentResult.razorpay_order_id,
             razorpay_signature: paymentResult.razorpay_signature,
-            userId: userID, 
-            items: cartItems, 
-            totalAmount: totalPayable, 
+            userId: userID,
+            items: cartItems,
+            totalAmount: totalPayable,
           });
 
           if (verifyRes?.success) {
             await handlePlaceOrder();
           } else {
-            alert("Payment verification failed");
+            toast.error("Payment verification failed");
           }
         },
         theme: {
@@ -165,11 +165,10 @@ const Checkout: React.FC = () => {
       };
 
       const rzp = new (window as any).Razorpay(options);
-      rzp.open(); // 🔥 Now popup will open
+      rzp.open();
 
     } catch (error) {
-      console.error("Payment error", error);
-      alert("Payment failed");
+      toast.error("Payment failed");
     }
   };
 
@@ -347,7 +346,6 @@ const Checkout: React.FC = () => {
           <AccordionDetails>
             <FormControl component="fieldset">
               <RadioGroup value={selectedPayment} onChange={(e) => setSelectedPayment(e.target.value)}>
-                <FormControlLabel disabled value="STRIPE" control={<Radio />} label="Credit/Debit Card (Stripe)" />
                 <FormControlLabel
                   value="RAZORPAY"
                   control={<Radio />}
