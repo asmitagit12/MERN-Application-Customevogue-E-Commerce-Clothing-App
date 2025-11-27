@@ -56,7 +56,7 @@ const AdminProfilePage: React.FC = () => {
     }
   })
 
-  const onSubmit = (data: FormData) => {
+  const onSubmit = () => {
     // console.log('Form data submitted:', data)
     // Handle form submission, e.g., send to API
   }
@@ -73,7 +73,7 @@ const AdminProfilePage: React.FC = () => {
   }
 
   return (
-    <div style={{ padding: '20px', backgroundColor: '#f5f5f5',marginTop:6 }}>
+    <div style={{ padding: '20px', backgroundColor: '#f5f5f5', marginTop: 6 }}>
       <Paper
         sx={{ padding: '24px', borderRadius: '8px', boxShadow: 3 }}
         elevation={3}
@@ -118,7 +118,7 @@ const AdminProfilePage: React.FC = () => {
                 zIndex: 2 // Ensures it appears above the image
               }}
             >
-              <CameraAltIcon fontSize='small' sx={{fontSize:20}}/>
+              <CameraAltIcon fontSize='small' sx={{ fontSize: 20 }} />
             </IconButton>
           </Box>
         </Box>
@@ -126,7 +126,7 @@ const AdminProfilePage: React.FC = () => {
         <Typography
           variant='h5'
           gutterBottom
-          sx={{ fontWeight: 'bold', color: '#333',pb:1 }}
+          sx={{ fontWeight: 'bold', color: '#333', pb: 1 }}
         >
           Personal Information
         </Typography>
@@ -236,7 +236,7 @@ const AdminProfilePage: React.FC = () => {
                   type='submit'
                   disabled={!isEditing}
                   sx={{
-                    whiteSpace:'nowrap',
+                    whiteSpace: 'nowrap',
                     fontWeight: 'bold',
                     textTransform: 'none',
                     boxShadow: '0px 2px 8px rgba(0, 0, 0, 0.1)',

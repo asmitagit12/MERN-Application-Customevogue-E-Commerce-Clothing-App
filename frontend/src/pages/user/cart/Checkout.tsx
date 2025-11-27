@@ -18,13 +18,12 @@ import {
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import { useAuthContext } from "../../../hooks/AuthContext";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../redux/store";
 import { getUserAddresses } from "../../../services/user/addressService";
 import { useNavigate } from "react-router-dom";
 import { placeOrder } from "../../../services/user/orderService";
 import razorpayLogo from '../../../assets/razorpay.png'
-import axios from "axios";
 import { createRazorpayOrder, verifyRazorpayPayment } from "../../../services/user/paymentService";
 import { emptyCart } from "../../../redux/slices/cartSlice";
 import toast from "react-hot-toast";
@@ -48,7 +47,7 @@ const Checkout: React.FC = () => {
   const cartItems = useSelector((state: RootState) => state.cart.products)
   const userID = user?._id as string
   const [addresses, setAddresses] = useState<Address[]>([]);
-
+  const dispatch = useDispatch();
 
   const [currentStep, setCurrentStep] = useState(1);
   const [selectedPayment, setSelectedPayment] = useState<string>("");
@@ -421,7 +420,4 @@ const Checkout: React.FC = () => {
 };
 
 export default Checkout;
-function dispatch(arg0: { payload: undefined; type: "cart/emptyCart"; }) {
-  throw new Error("Function not implemented.");
-}
 

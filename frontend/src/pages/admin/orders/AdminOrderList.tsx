@@ -26,6 +26,7 @@ import CloseIcon from '@mui/icons-material/Close'
 
 import BreadcrumbsComponent from '../../../components/controls/BreadcrumbsComponent'
 import { getAllUserOrders } from '../../../services/admin/orderServices'
+import toast from 'react-hot-toast'
 
 const AdminOrderList: React.FC = () => {
     const [orders, setOrders] = useState<any[]>([])
@@ -52,6 +53,7 @@ const AdminOrderList: React.FC = () => {
             } catch (error: any) {
                 const errorMessage =
                     error.response?.data?.message || error.message || 'Failed to fetch orders'
+                toast.error(errorMessage)
             }
         }
         fetchOrders()
@@ -164,25 +166,25 @@ const AdminOrderList: React.FC = () => {
                                                                     <TableHead>
                                                                         <TableRow>
                                                                             <TableCell sx={{
-                                                bgcolor: '#E5E4E2',
-                                                textTransform: 'capitalize',
-                                                fontWeight: 550
-                                            }}>Product Name</TableCell>
+                                                                                bgcolor: '#E5E4E2',
+                                                                                textTransform: 'capitalize',
+                                                                                fontWeight: 550
+                                                                            }}>Product Name</TableCell>
                                                                             <TableCell sx={{
-                                                bgcolor: '#E5E4E2',
-                                                textTransform: 'capitalize',
-                                                fontWeight: 550
-                                            }}>Quantity</TableCell>
+                                                                                bgcolor: '#E5E4E2',
+                                                                                textTransform: 'capitalize',
+                                                                                fontWeight: 550
+                                                                            }}>Quantity</TableCell>
                                                                             <TableCell sx={{
-                                                bgcolor: '#E5E4E2',
-                                                textTransform: 'capitalize',
-                                                fontWeight: 550
-                                            }}>Price</TableCell>
+                                                                                bgcolor: '#E5E4E2',
+                                                                                textTransform: 'capitalize',
+                                                                                fontWeight: 550
+                                                                            }}>Price</TableCell>
                                                                             <TableCell sx={{
-                                                bgcolor: '#E5E4E2',
-                                                textTransform: 'capitalize',
-                                                fontWeight: 550
-                                            }}>Total</TableCell>
+                                                                                bgcolor: '#E5E4E2',
+                                                                                textTransform: 'capitalize',
+                                                                                fontWeight: 550
+                                                                            }}>Total</TableCell>
                                                                         </TableRow>
                                                                     </TableHead>
                                                                     <TableBody>

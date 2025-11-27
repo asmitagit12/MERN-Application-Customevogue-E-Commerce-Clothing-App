@@ -43,6 +43,7 @@ const SignUp: React.FC = () => {
   const onSubmit = async (data: SignUnFormInputs) => {
     try {
       const response = await registerUser(data)
+      if (!response) { return }
       toast.success("Sign Up successful")
       navigate('/auth/signin')
     } catch (error: any) {
