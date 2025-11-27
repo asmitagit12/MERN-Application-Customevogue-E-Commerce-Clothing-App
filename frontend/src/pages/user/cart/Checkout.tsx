@@ -23,6 +23,10 @@ import { RootState } from "../../../redux/store";
 import { getUserAddresses } from "../../../services/user/addressService";
 import { useNavigate } from "react-router-dom";
 import { placeOrder } from "../../../services/user/orderService";
+import razorpayLogo from '../../../assets/razorpay.png'
+import axios from "axios";
+import { createRazorpayOrder, verifyRazorpayPayment } from "../../../services/user/paymentService";
+import { emptyCart } from "../../../redux/slices/cartSlice";
 
 type Address = {
   _id: string;
@@ -94,15 +98,84 @@ const Checkout: React.FC = () => {
       };
 
       const response = await placeOrder(orderPayload);
-      console.log('place order response >>>>', response)
-
       alert("Order placed successfully!");
       navigate("/orders");
+      dispatch(emptyCart());
+
     } catch (err) {
       console.error("Order placement failed", err);
       alert("Failed to place order. Please try again.");
     }
   }
+
+  const loadRazorpayScript = () => {
+    return new Promise((resolve) => {
+      const script = document.createElement("script");
+      script.src = "https://checkout.razorpay.com/v1/checkout.js";
+      script.onload = () => resolve(true);
+      script.onerror = () => resolve(false);
+      document.body.appendChild(script);
+    });
+  };
+
+  const handleRazorpayPayment = async () => {
+    const loaded = await loadRazorpayScript();
+    if (!loaded) {
+      alert("Razorpay SDK failed to load");
+      return;
+    }
+
+    try {
+      const amountInPaise = Math.round(Number(totalPayable) * 100);
+      const res = await createRazorpayOrder(amountInPaise);
+      const order_id = res?.orderId;
+      const currency = res?.currency;
+
+      if (!order_id) {
+        alert("Invalid Razorpay order response");
+        return;
+      }
+
+      const options = {
+        key: import.meta.env.VITE_RAZORPAY_KEY_ID,
+        amount: amountInPaise,
+        currency,
+        name: "Your Store Name",
+        description: "Order Payment",
+        order_id,                           // FIX 4
+        handler: async function (paymentResult: any) {
+          const verifyRes = await verifyRazorpayPayment({
+            razorpay_payment_id: paymentResult.razorpay_payment_id,
+            razorpay_order_id: paymentResult.razorpay_order_id,
+            razorpay_signature: paymentResult.razorpay_signature,
+            userId: userID, 
+            items: cartItems, 
+            totalAmount: totalPayable, 
+          });
+
+          if (verifyRes?.success) {
+            await handlePlaceOrder();
+          } else {
+            alert("Payment verification failed");
+          }
+        },
+        theme: {
+          color: "#3399cc",
+        },
+      };
+
+      const rzp = new (window as any).Razorpay(options);
+      rzp.open(); // 🔥 Now popup will open
+
+    } catch (error) {
+      console.error("Payment error", error);
+      alert("Payment failed");
+    }
+  };
+
+
+
+
 
   return (
     <Box display="flex" flexWrap={'wrap'} justifyContent="center" rowGap={2} flexDirection={{ xs: 'column', md: 'row' }} height={'auto'} p={3}>
@@ -275,7 +348,17 @@ const Checkout: React.FC = () => {
             <FormControl component="fieldset">
               <RadioGroup value={selectedPayment} onChange={(e) => setSelectedPayment(e.target.value)}>
                 <FormControlLabel disabled value="STRIPE" control={<Radio />} label="Credit/Debit Card (Stripe)" />
-                <FormControlLabel disabled value="RAZORPAY" control={<Radio />} label="UPI / Net Banking (Razorpay)" />
+                <FormControlLabel
+                  value="RAZORPAY"
+                  control={<Radio />}
+                  label={
+                    <Box display="flex" alignItems="center" gap={1}>
+                      <img src={razorpayLogo} alt="razorpay" width={60} />
+                      <Typography>UPI / NetBanking (Razorpay)</Typography>
+                    </Box>
+                  }
+                />
+
                 <FormControlLabel value="COD" control={<Radio />} label="Cash on Delivery (Only COD available)" />
               </RadioGroup>
             </FormControl>
@@ -298,7 +381,13 @@ const Checkout: React.FC = () => {
                   boxShadow: '0px 6px 14px rgba(0, 0, 0, 0.3)'
                 }
               }}
-              onClick={handlePlaceOrder}
+              onClick={() => {
+                if (selectedPayment === "COD") {
+                  handlePlaceOrder();
+                } else if (selectedPayment === "RAZORPAY") {
+                  handleRazorpayPayment();
+                }
+              }}
               disabled={!selectedPayment || !isAuthenticated}
             >
               Place Order
@@ -334,3 +423,7 @@ const Checkout: React.FC = () => {
 };
 
 export default Checkout;
+function dispatch(arg0: { payload: undefined; type: "cart/emptyCart"; }) {
+  throw new Error("Function not implemented.");
+}
+

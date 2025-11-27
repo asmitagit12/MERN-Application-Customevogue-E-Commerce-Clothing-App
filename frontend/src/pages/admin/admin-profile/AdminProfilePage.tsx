@@ -57,7 +57,7 @@ const AdminProfilePage: React.FC = () => {
   })
 
   const onSubmit = (data: FormData) => {
-    console.log('Form data submitted:', data)
+    // console.log('Form data submitted:', data)
     // Handle form submission, e.g., send to API
   }
 

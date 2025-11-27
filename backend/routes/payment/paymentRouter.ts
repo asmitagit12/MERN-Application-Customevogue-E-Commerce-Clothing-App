@@ -1,9 +1,10 @@
-import express from "express";
-// import { createPaymentOrder, verifyPayment } from "../../controllers/paymentController";
+// paymentRouter.ts
+import { Router } from "express";
+import { createRazorpayOrder, verifyRazorpayPayment } from "../../controllers/paymentController";
 
-const router = express.Router();
+const router = Router();
 
-// router.post("/orders", createPaymentOrder);
-// router.post("/verify", verifyPayment);
+router.post("/razorpay/create-order", createRazorpayOrder);
+router.post("/razorpay/verify", verifyRazorpayPayment);
 
 export default router;

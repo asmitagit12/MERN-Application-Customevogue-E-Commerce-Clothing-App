@@ -51,7 +51,8 @@ app.use('/api/user/category', userCategoryRoutes)
 app.use('/api', mediaRouter);
 
 app.use("/api/orders", orderRouter);
-app.use("/api/payments", paymentRouter);
+app.use("/api/payment", paymentRouter);
+
 
 
 app.listen(PORT, () => {

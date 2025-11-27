@@ -1,73 +1,74 @@
 import { Request, Response } from "express";
-import Stripe from "stripe";
-import Payment from "../models/Payment";
-import Order, { IOrder } from "../models/Order";  // Import IOrder type
-import mongoose from "mongoose";  // Import mongoose
+import crypto from "crypto";
+import Razorpay from "razorpay";
+import Order from "../models/Order";
 
-// Initialize Stripe with your secret key
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string);
+// Initialize Razorpay
+export const razorpay = new Razorpay({
+  key_id: process.env.RAZORPAY_KEY_ID!,
+  key_secret: process.env.RAZORPAY_KEY_SECRET!,
+});
 
-// Create a payment intent
-export const createPaymentIntent = async (req: Request, res: Response) => {
+// Create Razorpay order
+export const createRazorpayOrder = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { orderId } = req.body;
-
-    // Find the order by orderId
-    const order = await Order.findById(orderId).populate("items.productId");
-    if (!order) {
-      return res.status(404).json({ error: "Order not found" });
+    const { amount } = req.body;
+    if (!amount) {
+      res.status(400).json({ success: false, message: "Amount is required" });
+      return;
     }
 
-    // Type assertion to ensure that `order` is treated as `IOrder`
-    const typedOrder = order as IOrder;
+    const options = {
+      amount: amount, // in paise
+      currency: "INR",
+      receipt: "receipt_" + Date.now(),
+    };
 
-    // Ensure that _id is treated as a valid ObjectId and convert to string for Stripe metadata
-    const orderIdString = typedOrder._id.toString();  // Explicitly convert _id to string
+    const order = await razorpay.orders.create(options);
 
-    // Create a payment intent with Stripe
-    const paymentIntent = await stripe.paymentIntents.create({
-      amount: typedOrder.totalAmount * 100,  // Convert to smallest currency unit (e.g., paise for INR)
-      currency: "inr",  // Use INR currency
-      metadata: { orderId: orderIdString },  // Pass orderId as a string
+    res.status(200).json({
+      success: true,
+      orderId: order.id,
+      amount: order.amount,
+      currency: order.currency,
     });
-
-    // Respond with the client secret to confirm the payment on the frontend
-    res.status(200).json({ clientSecret: paymentIntent.client_secret });
   } catch (error) {
-    res.status(500).json({ error: "Failed to create payment intent" });
+    console.error("Create Razorpay order error:", error);
+    res.status(500).json({ success: false, message: "Failed to create order" });
   }
 };
 
-// Confirm payment and save payment status
-export const confirmPayment = async (req: Request, res: Response) => {
+// Verify Razorpay payment
+export const verifyRazorpayPayment = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { paymentId, paymentIntentId, status } = req.body;
+    const { razorpay_payment_id, razorpay_order_id, razorpay_signature, userId, items, totalAmount } = req.body;
 
-    // Find the order by the associated paymentId
-    const order = await Order.findById(paymentId);
-    if (!order) {
-      return res.status(404).json({ error: "Order not found" });
+    if (!razorpay_payment_id || !razorpay_order_id || !razorpay_signature) {
+      res.status(400).json({ success: false, message: "Missing payment fields" });
+      return;
     }
 
-    // Create a new payment document
-    const payment = new Payment({
-      orderId: order._id,  // Ensure _id is treated correctly as an ObjectId
-      paymentId,
-      signature: paymentIntentId,
-      amount: order.totalAmount,
-      status: status === "succeeded" ? "SUCCESS" : "FAILED",
-      createdAt: new Date(),
+    const body = razorpay_order_id + "|" + razorpay_payment_id;
+    const expectedSignature = crypto.createHmac("sha256", process.env.RAZORPAY_KEY_SECRET!)
+      .update(body)
+      .digest("hex");
+
+    if (expectedSignature !== razorpay_signature) {
+      res.status(400).json({ success: false, message: "Invalid signature" });
+      return;
+    }
+
+    const order = await Order.create({
+      userId,
+      items,
+      totalAmount,
+      paymentStatus: "PAID",
+      paymentMethod: "RAZORPAY",
     });
 
-    // Save the payment information to the database
-    await payment.save();
-
-    // Update the order status based on payment success or failure
-    order.status = status === "succeeded" ? "SHIPPED" : "CANCELED";
-    await order.save();
-
-    res.status(200).json(payment);
+    res.status(200).json({ success: true, message: "Payment verified", order });
   } catch (error) {
-    res.status(500).json({ error: "Failed to confirm payment" });
+    console.error("Razorpay verification error:", error);
+    res.status(500).json({ success: false, message: "Verification failed" });
   }
 };

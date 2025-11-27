@@ -1,11 +1,18 @@
 import mongoose, { Schema, Document } from "mongoose";
 
 // Enum for Order Status
-enum OrderStatus {
+export enum OrderStatus {
   PENDING = "PENDING",
   SHIPPED = "SHIPPED",
   DELIVERED = "DELIVERED",
   CANCELED = "CANCELED",
+}
+
+// Enum for Payment Status
+export enum PaymentStatus {
+  PENDING = "PENDING",
+  PAID = "PAID",
+  FAILED = "FAILED",
 }
 
 export interface IOrder extends Document {
@@ -14,20 +21,21 @@ export interface IOrder extends Document {
     productId: mongoose.Schema.Types.ObjectId;
     quantity: number;
     price: number;
-  }>; 
-  totalAmount: number; 
-  status: OrderStatus; 
+  }>;
+  totalAmount: number;
+  status: OrderStatus; // order status
   paymentMethod: string;
-  createdAt: Date; 
-  updatedAt: Date; 
+  paymentStatus: PaymentStatus; // new field
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 const OrderSchema: Schema = new Schema(
   {
-    userId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true }, // Reference to User model
+    userId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
     items: [
       {
-        productId: { type: mongoose.Schema.Types.ObjectId, ref: "Product", required: true }, // Reference to Product model
+        productId: { type: mongoose.Schema.Types.ObjectId, ref: "Product", required: true },
         quantity: { type: Number, required: true },
         price: { type: Number, required: true },
       },
@@ -39,11 +47,16 @@ const OrderSchema: Schema = new Schema(
       default: OrderStatus.PENDING,
     },
     paymentMethod: { type: String, required: true },
+    paymentStatus: {
+      type: String,
+      enum: Object.values(PaymentStatus),
+      default: PaymentStatus.PENDING,
+    },
     createdAt: { type: Date, default: Date.now },
     updatedAt: { type: Date, default: Date.now },
   },
   {
-    timestamps: true, // Automatically manage createdAt and updatedAt
+    timestamps: true,
   }
 );
 

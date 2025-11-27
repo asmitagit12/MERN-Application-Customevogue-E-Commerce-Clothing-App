@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import {
   Box,
   Button,
@@ -7,7 +7,9 @@ import {
   Link,
   Stack,
   Divider,
-  Grid
+  Grid,
+  InputAdornment,
+  IconButton
 } from '@mui/material'
 import { useForm, Controller } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -15,6 +17,7 @@ import * as z from 'zod'
 import { registerUser } from '../services/auth/authServices'
 import toast from 'react-hot-toast'
 import { useNavigate } from 'react-router-dom'
+import { Visibility, VisibilityOff } from '@mui/icons-material'
 
 const SignUpSchema = z.object({
   firstName: z.string().min(1, 'First name is required'),
@@ -35,11 +38,11 @@ const SignUp: React.FC = () => {
     resolver: zodResolver(SignUpSchema)
   })
   const navigate = useNavigate()
+  const [showPassword, setShowPassword] = useState(false)
 
   const onSubmit = async (data: SignUnFormInputs) => {
     try {
       const response = await registerUser(data)
-      console.log(response)
       toast.success("Sign Up successful")
       navigate('/auth/signin')
     } catch (error: any) {
@@ -49,6 +52,10 @@ const SignUp: React.FC = () => {
       )
     }
   }
+
+  const handleClickShowPassword = () => setShowPassword((prev) => !prev)
+
+
   return (
     <Box sx={{ width: '100%' }}>
       <Stack direction="row" alignItems="center" spacing={2}>
@@ -158,10 +165,22 @@ const SignUp: React.FC = () => {
                   fullWidth
                   size='small'
                   label='Password'
-                  type='password'
+                  type={showPassword ? 'text' : 'password'}
                   variant='outlined'
                   error={!!errors.password}
                   helperText={errors.password?.message}
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <IconButton
+                          onClick={handleClickShowPassword}
+                          edge="end"
+                        >
+                          {showPassword ? <VisibilityOff /> : <Visibility />}
+                        </IconButton>
+                      </InputAdornment>
+                    )
+                  }}
                 />
               )}
             />

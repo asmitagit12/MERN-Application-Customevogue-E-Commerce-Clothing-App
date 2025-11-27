@@ -56,7 +56,6 @@ const UserList: React.FC = () => {
           error.response?.data?.message ||
           error.message ||
           'Failed to fetch users'
-        console.log(errorMessage)
       }
     }
     fetchUsers()

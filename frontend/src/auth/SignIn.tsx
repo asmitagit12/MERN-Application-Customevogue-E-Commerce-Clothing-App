@@ -1,6 +1,6 @@
 
 
-import React from 'react'
+import React, { useState } from 'react'
 import {
   Box,
   Button,
@@ -8,7 +8,9 @@ import {
   Typography,
   Link,
   Stack,
-  Divider
+  Divider,
+  InputAdornment,
+  IconButton
 } from '@mui/material'
 import { useForm, Controller } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -21,6 +23,7 @@ import toast from 'react-hot-toast'
 import { loginAction } from '../redux/slices/authSlice'
 import { useDispatch } from 'react-redux'
 import { getUserProfile } from '../services/user/userService'
+import { Visibility, VisibilityOff } from '@mui/icons-material'
 
 const SignInSchema = z.object({
   email: z.string().email('Invalid email address'),
@@ -38,6 +41,7 @@ const SignIn: React.FC = () => {
   const { login } = useAuthContext()
   const navigate = useNavigate()
   const dispatch = useDispatch()
+  const [showPassword, setShowPassword] = useState(false)
   const {
     handleSubmit,
     control,
@@ -53,8 +57,6 @@ const SignIn: React.FC = () => {
       sessionStorage.setItem('authToken', token)
       sessionStorage.setItem('isAuth', JSON.stringify(true))
       const decodedToken = jwtDecode<DecodedToken>(token)
-
-
       const userId = decodedToken.userId;
       const userRole = decodedToken.role;
 
@@ -75,6 +77,8 @@ const SignIn: React.FC = () => {
       toast.error(errorMessage)
     }
   }
+
+  const handleClickShowPassword = () => setShowPassword((prev) => !prev)
 
   return (
     <Box sx={{ width: '100%' }}>
@@ -119,10 +123,22 @@ const SignIn: React.FC = () => {
                   fullWidth
                   size='small'
                   label='Password'
-                  type='password'
+                  type={showPassword ? 'text' : 'password'}
                   variant='outlined'
                   error={!!errors.password}
                   helperText={errors.password?.message}
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <IconButton
+                          onClick={handleClickShowPassword}
+                          edge="end"
+                        >
+                          {showPassword ? <VisibilityOff /> : <Visibility />}
+                        </IconButton>
+                      </InputAdornment>
+                    )
+                  }}
                 />
               )}
             />

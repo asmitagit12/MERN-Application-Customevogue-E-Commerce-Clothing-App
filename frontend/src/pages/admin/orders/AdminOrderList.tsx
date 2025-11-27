@@ -52,7 +52,6 @@ const AdminOrderList: React.FC = () => {
             } catch (error: any) {
                 const errorMessage =
                     error.response?.data?.message || error.message || 'Failed to fetch orders'
-                console.log(errorMessage)
             }
         }
         fetchOrders()

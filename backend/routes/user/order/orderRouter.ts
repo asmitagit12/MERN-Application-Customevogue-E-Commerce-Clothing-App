@@ -1,5 +1,6 @@
 import express from "express";
 import { createOrder, deleteOrder, getOrderById, getOrders, getOrdersByUserId, updateOrderStatus } from "../../../controllers/orderController";
+import { createRazorpayOrder, verifyRazorpayPayment } from "../../../controllers/paymentController";
 
 const router = express.Router();
 

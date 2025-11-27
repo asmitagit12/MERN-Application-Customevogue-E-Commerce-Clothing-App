@@ -408,6 +408,7 @@ const Dashboard: React.FC = () => {
               <Button
                 variant='contained'
                 color='primary'
+                onClick={()=>navigate('/collection')}
                 sx={{
                   mt: 2,
                   width: { lg: 300, md: 300, xs: '100%' },

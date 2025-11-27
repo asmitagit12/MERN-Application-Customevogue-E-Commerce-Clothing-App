@@ -79,7 +79,6 @@ const ProductList = () => {
   }, [])
 
   const handleChangePage = (page: number) => {
-    console.log(page);
     setCurrentPage(page);
   };
 
