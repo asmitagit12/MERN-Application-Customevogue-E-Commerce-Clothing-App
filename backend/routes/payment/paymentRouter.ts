@@ -1,4 +1,3 @@
-// paymentRouter.ts
 import { Router } from "express";
 import { createRazorpayOrder, verifyRazorpayPayment } from "../../controllers/paymentController";
 

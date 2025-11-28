@@ -22,13 +22,10 @@ connectDB()
 const app = express()
 const PORT = process.env.PORT || 5000
 
-
 app.use(cors())
-
 
 app.use(express.json())
 
-// Serve static files from the 'uploads' directory
 app.use('/api/uploads', express.static(path.join(__dirname, 'uploads')));
 
 app.get('/', (req: Request, res: Response) => {
@@ -36,10 +33,10 @@ app.get('/', (req: Request, res: Response) => {
 })
 
 // admin routes
-app.use('/api/auth', authRoutes) // API for products
-app.use('/api/products', productRoutes) // API for products
-app.use('/api/subcategories', subCategoryRoutes) // API for products
-app.use('/api/category', authenticate, isAdmin, categoryRoutes) // API for products
+app.use('/api/auth', authRoutes)
+app.use('/api/products', productRoutes)
+app.use('/api/subcategories', subCategoryRoutes)
+app.use('/api/category', authenticate, isAdmin, categoryRoutes)
 app.use('/api/users', authenticate, isAdmin, userRoutes)
 app.use('/api/profile', userProfileRouter)
 app.use('/api/addresses', addressRouter)
@@ -52,8 +49,6 @@ app.use('/api', mediaRouter);
 
 app.use("/api/orders", orderRouter);
 app.use("/api/payment", paymentRouter);
-
-
 
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`)
