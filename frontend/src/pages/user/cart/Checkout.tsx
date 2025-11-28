@@ -96,7 +96,6 @@ const Checkout: React.FC = () => {
         totalAmount: totalPayable,
         paymentMethod: selectedPayment,
       };
-
       const response = await placeOrder(orderPayload).catch(() => null);
       if (!response) return;
       toast.success("Order placed successfully!");
