@@ -153,7 +153,9 @@ const Checkout: React.FC = () => {
           });
 
           if (verifyRes?.success) {
-            await handlePlaceOrder();
+            toast.success("Payment successful!");
+            navigate("/orders");
+            dispatch(emptyCart());
           } else {
             toast.error("Payment verification failed");
           }
